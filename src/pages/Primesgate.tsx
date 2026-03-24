@@ -160,7 +160,7 @@ export default function Primesgate() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
               <img
-                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1000"
+                src="https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&q=80&w=1000"
                 alt="Community Nature"
                 className="rounded-3xl shadow-2xl"
                 referrerPolicy="no-referrer"

@@ -11,39 +11,24 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Genade Homes" className="h-12 w-auto object-contain brightness-0 invert" onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none';
-                (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                (e.target as HTMLImageElement).nextElementSibling?.classList.add('flex');
-              }} />
-              <div className="hidden items-center space-x-2">
-                <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-primary font-bold text-xl">
-                  G
-                </div>
-                <span className="font-serif text-2xl font-bold tracking-tight">
-                  GENADE <span className="text-secondary">HOMES</span>
-                </span>
-              </div>
+              <img src="/logo.png" alt="Genade Homes" className="h-12 w-auto object-contain brightness-0 invert" />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
               Sustainable Communities. Strategic Locations. Homes That Last.
               We create residential communities across Abuja’s growth corridors.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
+              <a href="https://www.youtube.com/@GenadeHomesltd" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
                 <Youtube size={18} />
               </a>
-              <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
+              <a href="https://www.instagram.com/genade_homes/" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
+              <a href="https://web.facebook.com/profile.php?id=61578088413968&sk=about" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
+              <a href="https://x.com/GenadeHomes" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
                 <Twitter size={18} />
-              </a>
-              <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary hover:text-primary transition-all">
-                <Send size={18} />
               </a>
             </div>
           </div>
