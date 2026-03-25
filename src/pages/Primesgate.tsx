@@ -5,9 +5,11 @@ import { cn } from "@/src/lib/utils";
 const WHATSAPP_LINK = "https://wa.me/+2348143999430";
 
 const plotSizes = [
-  { size: "300sqm", price: "₦6,480,000" },
-  { size: "500sqm", price: "₦10,800,000" },
-  { size: "1000sqm", price: "₦21,600,000" }
+  { size: "150sqm", type: "three bedroom terrace duplex" },
+  { size: "250sqm", type: "four bedroom semi detached duplex" },
+  { size: "350sqm", type: "four bedroom fully detached duplex" },
+  { size: "500sqm", type: "five bedroom fully detached duplex" },
+  { size: "1000sqm", type: "six unit of three bedroom block of flat" }
 ];
 
 const testimonials = [
@@ -28,13 +30,15 @@ export default function Primesgate() {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920"
-          alt="Mountain Landscape"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-transparent to-primary/80" />
+        <div className="absolute inset-0 opacity-30">
+          <img
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920"
+            alt="Mountain Landscape"
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary" />
+        </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <motion.div
@@ -50,7 +54,7 @@ export default function Primesgate() {
               PRIMESGATE <span className="text-secondary">ESTATE</span>
             </h1>
             <p className="text-2xl text-white font-medium mb-4">
-              Own a Mountain-Surrounded Residential Plot Along Abuja Airport Road From ₦6.48M
+              Own a Mountain-Surrounded Residential Plot Along Abuja Airport Road
             </p>
             <p className="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">
               Allocation Ongoing. Verified R of O Title. Airport Road Growth Corridor. Mountain-Surrounded Landscape.
@@ -230,7 +234,7 @@ export default function Primesgate() {
             {plotSizes.map((plot, i) => (
               <div key={i} className="bg-white/5 border border-white/10 p-10 rounded-3xl text-center hover:bg-white/10 transition-all group">
                 <h3 className="font-serif text-3xl font-bold mb-4 text-secondary">{plot.size}</h3>
-                <p className="text-2xl md:text-3xl lg:text-4xl font-black mb-8 whitespace-nowrap overflow-hidden text-ellipsis">{plot.price}</p>
+                <p className="text-lg md:text-xl font-medium mb-8 text-white/90">{plot.type}</p>
                 <a
                   href={WHATSAPP_LINK}
                   target="_blank"

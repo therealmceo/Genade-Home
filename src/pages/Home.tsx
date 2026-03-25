@@ -18,11 +18,11 @@ const estates = [
     location: "Airport Road, Before Centenary City, Abuja",
     title: "FCDA C of O | Presale",
     prices: [
-      "150sqm — ₦6.48M",
-      "250sqm — ₦10.8M",
-      "350sqm — ₦15.48M",
-      "500sqm — ₦21.6M",
-      "1000sqm — ₦43.2M"
+      "150sqm: three bedroom terrace duplex",
+      "250sqm: four bedroom semi detached duplex",
+      "350sqm: four bedroom fully detached duplex",
+      "500sqm: five bedroom fully detached duplex",
+      "1000sqm: six unit of three bedroom block of flat"
     ],
     description: "A strategically located estate along the Airport Road growth corridor, designed for future homeowners and investors positioning early.",
     image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=800",
@@ -33,9 +33,8 @@ const estates = [
     location: "Behind Centenary City, Kuje, Abuja",
     title: "Presale",
     prices: [
-      "180sqm — ₦3.25M",
-      "250sqm — ₦4.55M",
-      "500sqm — ₦7.80M"
+      "180sqm: 2 bedroom semi detached bungalow",
+      "250sqm: 3 bedroom fully detached bungalow"
     ],
     description: "An emerging residential community in the fast-developing Kuje axis, ideal for buyers seeking affordable entry into Abuja property.",
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
@@ -46,11 +45,11 @@ const estates = [
     location: "Sheretti Kabusa, Abuja",
     title: "FCDA C of O Fully Paid",
     prices: [
-      "150sqm — ₦5.85M",
-      "250sqm — ₦9.75M",
-      "350sqm — ₦13.65M",
-      "500sqm — ₦19.5M",
-      "750sqm — ₦37.05M"
+      "150sqm: three bedroom terrace duplex",
+      "250sqm: four bedroom semi detached duplex",
+      "350sqm: four bedroom fully detached duplex",
+      "500sqm: five bedroom fully detached duplex",
+      "750sqm: six unit of two bedroom block of flat"
     ],
     description: "A fully secured estate in Kabusa offering structured residential planning within one of Abuja’s expanding urban belts.",
     image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
@@ -84,10 +83,23 @@ const estates = [
     location: "Apo Wassa, Abuja",
     title: "Presale",
     prices: [
-      "450sqm — ₦19.2M"
+      "450sqm: five bedroom fully detached duplex"
     ],
     description: "A premium residential community in the strategic Apo Wassa axis, offering high-value positioning within Abuja’s urban belt.",
     image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800",
+    link: "#"
+  },
+  {
+    name: "Fairview Estate",
+    location: "Kuje, Abuja",
+    title: "Presale",
+    prices: [
+      "300sqm: four bedroom terrace duplex",
+      "350sqm: four bedroom terrace duplex",
+      "450sqm: five bedroom fully detached duplex"
+    ],
+    description: "A modern residential development in Kuje designed for comfort and contemporary living.",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800",
     link: "#"
   }
 ];
