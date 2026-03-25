@@ -7,9 +7,9 @@ import { cn } from "@/src/lib/utils";
 const WHATSAPP_LINK = "https://wa.me/+2348143999430";
 
 const heroImages = [
-  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1920",
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920",
-  "https://images.unsplash.com/photo-1600607687940-c52af036999c?auto=format&fit=crop&q=80&w=1920"
+  "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=1920",
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1920"
 ];
 
 const estates = [
@@ -38,7 +38,7 @@ const estates = [
     ],
     description: "An emerging residential community in the fast-developing Kuje axis, ideal for buyers seeking affordable entry into Abuja property.",
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
-    link: "#"
+    link: "/the-verdant"
   },
   {
     name: "Addis City",
@@ -53,7 +53,7 @@ const estates = [
     ],
     description: "A fully secured estate in Kabusa offering structured residential planning within one of Abuja’s expanding urban belts.",
     image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
-    link: "#"
+    link: "/addis-city"
   },
   {
     name: "White Plains",
@@ -65,7 +65,7 @@ const estates = [
     ],
     description: "A premium residential development in Galadimawa designed for buyers seeking finished homes in a prime city location.",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
-    link: "#"
+    link: "/white-plains"
   },
   {
     name: "Peace Ville",
@@ -76,7 +76,7 @@ const estates = [
     ],
     description: "A family-friendly development in Lokogoma combining accessibility with residential comfort.",
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
-    link: "#"
+    link: "/peace-ville"
   },
   {
     name: "Vine City",
@@ -87,7 +87,7 @@ const estates = [
     ],
     description: "A premium residential community in the strategic Apo Wassa axis, offering high-value positioning within Abuja’s urban belt.",
     image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800",
-    link: "#"
+    link: "/vine-city"
   },
   {
     name: "Fairview Estate",
@@ -100,7 +100,7 @@ const estates = [
     ],
     description: "A modern residential development in Kuje designed for comfort and contemporary living.",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800",
-    link: "#"
+    link: "/fairview-estate"
   }
 ];
 
@@ -280,14 +280,12 @@ export default function Home() {
                     {estate.description}
                   </p>
                   <div className="flex gap-3">
-                    <a
-                      href={WHATSAPP_LINK}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to={estate.link}
                       className="flex-1 bg-primary text-white py-3 rounded-lg text-center text-sm font-bold hover:bg-primary/90 transition-colors"
                     >
                       View Estate
-                    </a>
+                    </Link>
                     <a
                       href={WHATSAPP_LINK}
                       target="_blank"
