@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Genade Homes" className="h-12 w-auto object-contain" />
+              <img src="/logo.png" alt="Genade Homes" className="h-12 w-auto object-contain" referrerPolicy="no-referrer" />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
               Sustainable Communities. Strategic Locations. Homes That Last.

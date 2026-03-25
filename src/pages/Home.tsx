@@ -482,7 +482,7 @@ export default function Home() {
       <section className="py-24 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-gray-900 rounded-[3rem] py-20 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="" className="w-full h-full object-cover" />
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <div className="relative z-10">
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-8">Start Your Property Journey With Genade Homes</h2>
