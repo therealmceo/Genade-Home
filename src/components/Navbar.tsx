@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, MessageSquare } from "lucide-react";
 import { cn } from "@/src/lib/utils";
-import logo from "@/src/assets/logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -35,7 +34,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt="Genade Homes" className="h-10 w-auto object-contain" referrerPolicy="no-referrer" />
+            <img 
+              src="/logo.png" 
+              alt="Genade Homes" 
+              width="160" 
+              height="40" 
+              className="h-10 w-auto object-contain" 
+              referrerPolicy="no-referrer" 
+            />
           </Link>
 
           {/* Desktop Nav */}
