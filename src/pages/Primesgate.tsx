@@ -28,15 +28,13 @@ export default function Primesgate() {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <img
-            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920"
-            alt="Mountain Landscape"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary" />
-        </div>
+        <img
+          src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920"
+          alt="Mountain Landscape"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-transparent to-primary/80" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <motion.div
@@ -198,11 +196,15 @@ export default function Primesgate() {
                 <ul className="space-y-3 text-gray-300">
                   <li className="flex items-center space-x-2">
                     <CheckCircle2 className="text-secondary" size={18} />
-                    <span>Artificial beach relaxation zone</span>
+                    <span>Love garden</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <CheckCircle2 className="text-secondary" size={18} />
-                    <span>Community football pitch</span>
+                    <span>Science museum</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle2 className="text-secondary" size={18} />
+                    <span>Games court</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <CheckCircle2 className="text-secondary" size={18} />

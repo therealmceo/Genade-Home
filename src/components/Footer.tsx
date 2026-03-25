@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Genade Homes" className="h-12 w-auto object-contain brightness-0 invert" />
+              <img src="https://drive.google.com/uc?id=1Jf9V-EFUMgAY2deUkzoCYr6nHeGb7T79" alt="Genade Homes" className="h-12 w-auto object-contain brightness-0 invert" />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
               Sustainable Communities. Strategic Locations. Homes That Last.
@@ -55,7 +55,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="text-secondary shrink-0" size={18} />
-                <a href="mailto:genadehomes@gmail.com" className="hover:text-secondary transition-colors">genadehomes@gmail.com</a>
+                <a href="mailto:info@genadehome.com" className="hover:text-secondary transition-colors">info@genadehome.com</a>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="text-secondary shrink-0" size={18} />

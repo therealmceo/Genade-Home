@@ -27,14 +27,13 @@ export default function Webinar() {
     <div className="pt-20 bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-24 bg-primary text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=1920"
-            alt="Professional at Work"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        </div>
+        <img
+          src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=1920"
+          alt="Professional at Work"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/60 to-primary/90" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div

@@ -1,8 +1,16 @@
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Link } from "react-router-dom";
 import { CheckCircle2, ArrowRight, MessageSquare, MapPin, ShieldCheck, TrendingUp, Users, Star } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
 const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+
+const heroImages = [
+  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1920",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920",
+  "https://images.unsplash.com/photo-1600607687940-c52af036999c?auto=format&fit=crop&q=80&w=1920"
+];
 
 const estates = [
   {
@@ -70,6 +78,17 @@ const estates = [
     description: "A family-friendly development in Lokogoma combining accessibility with residential comfort.",
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
     link: "#"
+  },
+  {
+    name: "Vine City",
+    location: "Apo Wassa, Abuja",
+    title: "Presale",
+    prices: [
+      "450sqm — ₦19.2M"
+    ],
+    description: "A premium residential community in the strategic Apo Wassa axis, offering high-value positioning within Abuja’s urban belt.",
+    image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800",
+    link: "#"
   }
 ];
 
@@ -87,68 +106,114 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="pt-20">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <img
-            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1920"
-            alt="Real Estate Background"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
+        <div className="absolute inset-0">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentImage}
+              src={heroImages[currentImage]}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 0.5, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+              alt="Real Estate Background"
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.2
+                }
+              }
+            }}
             className="max-w-3xl"
           >
-            <h1 className="font-serif text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
+            <motion.h1 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              className="font-serif text-5xl md:text-7xl font-bold text-white leading-tight mb-6"
+            >
               Sustainable Communities. <br />
               <span className="text-secondary">Strategic Locations.</span> <br />
               Homes That Last.
-            </h1>
-            <p className="text-xl text-gray-300 mb-10 leading-relaxed">
+            </motion.h1>
+            <motion.p 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              className="text-xl text-gray-100 mb-10 leading-relaxed drop-shadow-md"
+            >
               At Genade Homes, we create residential communities across Abuja’s growth corridors — places where people don’t just buy property, but truly belong.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-secondary text-primary px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center space-x-2 hover:scale-105 transition-transform"
+            </motion.p>
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <Link
+                to="/primesgate"
+                className="bg-secondary text-primary px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center space-x-2 hover:scale-105 transition-transform shadow-lg"
               >
                 <span>Explore Properties</span>
                 <ArrowRight size={20} />
-              </a>
+              </Link>
               <a
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/10 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center space-x-2 hover:bg-white/20 transition-all"
+                className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center space-x-2 hover:bg-white/30 transition-all"
               >
                 <span>Book Inspection</span>
               </a>
-            </div>
+            </motion.div>
 
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1 }
+              }}
+              className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6"
+            >
               {[
                 "FCDA-approved locations",
                 "Verified documentation",
                 "Strategic growth zones",
                 "Flexible purchase options"
               ].map((item, i) => (
-                <div key={i} className="flex items-center space-x-2 text-gray-300 text-sm">
+                <div key={i} className="flex items-center space-x-2 text-white font-medium text-sm">
                   <CheckCircle2 className="text-secondary shrink-0" size={16} />
-                  <span>{item}</span>
+                  <span className="drop-shadow-sm">{item}</span>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -245,7 +310,7 @@ export default function Home() {
                 We've carefully selected over five prime locations across Abuja's most promising growth corridors. From the bustling Airport Road to the serene Kuje axis, our estates are positioned where value meets lifestyle.
               </p>
               <div className="flex flex-wrap gap-4">
-                {["Airport Road", "Kuje", "Kabusa", "Galadimawa", "Lokogoma"].map((loc, i) => (
+                {["Airport Road", "Kuje", "Kabusa", "Galadimawa", "Lokogoma", "Apo Wassa"].map((loc, i) => (
                   <span key={i} className="px-4 py-2 bg-gray-100 rounded-full text-sm font-bold text-primary">
                     {loc}
                   </span>
@@ -413,14 +478,12 @@ export default function Home() {
               Whether you’re buying land, investing, or purchasing a home, our team will guide you from inquiry to ownership.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/primesgate"
                 className="bg-secondary text-primary px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform"
               >
                 Explore Available Properties
-              </a>
+              </Link>
               <a
                 href={WHATSAPP_LINK}
                 target="_blank"
