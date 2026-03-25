@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Youtube, Instagram, Facebook, Twitter, Send, MessageCircle } from "lucide-react";
+import logo from "@/src/assets/logo.png";
 
 export default function Footer() {
   const WHATSAPP_LINK = "https://wa.me/+2348143999430";
@@ -11,7 +12,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Genade Homes" className="h-12 w-auto object-contain" referrerPolicy="no-referrer" />
+              <img src={logo} alt="Genade Homes" className="h-12 w-auto object-contain" referrerPolicy="no-referrer" />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
               Sustainable Communities. Strategic Locations. Homes That Last.
