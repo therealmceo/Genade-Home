@@ -22,8 +22,7 @@ const estates = [
       "250sqm: four bedroom semi detached duplex — ₦12,468,750",
       "350sqm: four bedroom fully detached duplex — ₦14,960,937",
       "500sqm: five bedroom fully detached duplex — ₦25,000,000",
-      "1000sqm: six unit of three bedroom block of flat — ₦50,000,000",
-      "The price takes effect from 31st March"
+      "1000sqm: six unit of three bedroom block of flat — ₦50,000,000"
     ],
     description: "A strategically located estate along the Airport Road growth corridor, designed for future homeowners and investors positioning early.",
     image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=800",

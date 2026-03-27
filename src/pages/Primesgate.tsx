@@ -248,10 +248,6 @@ export default function Primesgate() {
               ))}
             </div>
 
-            <div className="mt-8 text-center">
-              <p className="text-secondary font-bold text-lg">Note: These prices take effect from 31st March</p>
-            </div>
-
           <div className="mt-16 bg-white/5 p-10 rounded-3xl border border-white/10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
