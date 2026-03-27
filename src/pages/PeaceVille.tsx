@@ -2,12 +2,12 @@ import { motion } from "motion/react";
 import { CheckCircle2, MapPin, Building2, ArrowRight, FileText, Calendar, MessageSquare, Home, TrendingUp } from "lucide-react";
 
 export default function PeaceVille() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/0fajj5";
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -18,7 +18,7 @@ export default function PeaceVille() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

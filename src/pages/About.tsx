@@ -33,9 +33,9 @@ export default function About() {
   const WHATSAPP_LINK = "https://wa.me/+2348143999430";
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative bg-primary py-24 text-white overflow-hidden">
+      <section className="relative bg-primary py-32 text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-secondary rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full filter blur-3xl translate-x-1/2 translate-y-1/2"></div>

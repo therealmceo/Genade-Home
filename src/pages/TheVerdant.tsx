@@ -2,18 +2,17 @@ import { motion } from "motion/react";
 import { CheckCircle2, MapPin, Building2, ArrowRight, FileText, Calendar, MessageSquare, ShieldCheck, Leaf, TrendingUp } from "lucide-react";
 
 const plotOptions = [
-  { size: "180sqm", price: "₦3.25M", build: "Perfect for a 2-bedroom semi-detached bungalow" },
-  { size: "250sqm", price: "₦4.55M", build: "Ideal for a 3-bedroom fully detached bungalow" },
-  { size: "500sqm", price: "₦7.80M", build: "Suitable for a 5-bedroom fully detached home or investment build" },
+  { size: "180sqm", price: "₦3.25M", build: "2 bedroom semi detached bungalow" },
+  { size: "250sqm", price: "₦4.55M", build: "3 bedroom fully detached bungalow" },
 ];
 
 export default function TheVerdant() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/wqli16";
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -24,7 +23,7 @@ export default function TheVerdant() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -102,7 +101,7 @@ export default function TheVerdant() {
               </div>
             </div>
             <div className="relative">
-              <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Green Landscape" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1592595893561-22204692a118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Green Landscape" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
               <div className="absolute -bottom-6 -right-6 bg-secondary p-8 rounded-2xl hidden md:block">
                 <p className="text-primary font-bold text-xl">Peaceful Living</p>
                 <p className="text-primary/80 text-sm">Space, calm, and growth</p>

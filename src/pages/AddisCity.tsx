@@ -6,16 +6,16 @@ const plotOptions = [
   { size: "250sqm", price: "₦9.75M", build: "Ideal for a 4-bedroom semi-detached duplex" },
   { size: "350sqm", price: "₦13.65M", build: "Suitable for a 4-bedroom fully detached duplex" },
   { size: "500sqm", price: "₦19.5M", build: "Best for a 5-bedroom fully detached duplex" },
-  { size: "750sqm", price: "₦37.05M", build: "Excellent for 6 units of 2-bedroom flats (rental investment)" },
+  { size: "750sqm", price: "₦37.05M", build: "Excellent for 6 units of 2-bedroom block of flat (rental investment)" },
 ];
 
 export default function AddisCity() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/a9moco";
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -26,7 +26,7 @@ export default function AddisCity() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -110,7 +110,7 @@ export default function AddisCity() {
               </div>
             </div>
             <div className="relative">
-              <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Estate Plan" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1503387762-592dee58c160?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Estate Plan" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
               <div className="absolute -bottom-6 -right-6 bg-primary p-8 rounded-2xl hidden md:block">
                 <p className="text-secondary font-bold text-xl">FCDA C of O</p>
                 <p className="text-white/80 text-sm">Fully Paid & Secure</p>

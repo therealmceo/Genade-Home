@@ -2,12 +2,12 @@ import { motion } from "motion/react";
 import { CheckCircle2, MapPin, Building2, ArrowRight, FileText, Calendar, MessageSquare, TrendingUp } from "lucide-react";
 
 export default function VineCity() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/0ch503";
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -18,7 +18,7 @@ export default function VineCity() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -85,7 +85,7 @@ export default function VineCity() {
                   <span className="text-3xl font-serif font-bold text-secondary">₦19.2M</span>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  A well-sized plot designed for a spacious residential home or high-value investment build.
+                  five bedroom fully detached duplex
                 </p>
                 <ul className="space-y-3">
                   {[
@@ -145,7 +145,7 @@ export default function VineCity() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Premium Residential" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1600607687940-47a04b697a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Premium Residential" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-6">Built for Long-Term Value</h2>

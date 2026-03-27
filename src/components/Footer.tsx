@@ -45,7 +45,14 @@ export default function Footer() {
             <h3 className="font-serif text-xl font-bold mb-6 text-secondary">Quick Links</h3>
             <ul className="space-y-4 text-sm text-gray-300">
               <li><Link to="/" className="hover:text-secondary transition-colors">Home</Link></li>
+              <li><Link to="/about" className="hover:text-secondary transition-colors">About Us</Link></li>
               <li><Link to="/primesgate" className="hover:text-secondary transition-colors">Primesgate Estate</Link></li>
+              <li><Link to="/addis-city" className="hover:text-secondary transition-colors">Addis City</Link></li>
+              <li><Link to="/the-verdant" className="hover:text-secondary transition-colors">The Verdant</Link></li>
+              <li><Link to="/vine-city" className="hover:text-secondary transition-colors">Vine City</Link></li>
+              <li><Link to="/peace-ville" className="hover:text-secondary transition-colors">Peace Ville</Link></li>
+              <li><Link to="/white-plains" className="hover:text-secondary transition-colors">White Plains</Link></li>
+              <li><Link to="/fairview-estate" className="hover:text-secondary transition-colors">Fairview Estate</Link></li>
               <li><Link to="/webinar" className="hover:text-secondary transition-colors">Webinar Training</Link></li>
               <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Book Inspection</a></li>
               <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Speak With Advisor</a></li>

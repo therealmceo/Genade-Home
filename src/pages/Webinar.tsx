@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { CheckCircle2, XCircle, MessageSquare, ArrowRight, Play, Users, Clock, ShieldCheck, Star, MapPin, TrendingUp } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
-const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+const WHATSAPP_LINK = "https://wa.link/wccfts";
 
 const testimonials = [
   {
@@ -24,9 +24,9 @@ const testimonials = [
 
 export default function Webinar() {
   return (
-    <div className="pt-20 bg-gray-50">
+    <div className="bg-gray-50">
       {/* Hero Section */}
-      <section className="relative py-24 bg-primary text-white overflow-hidden">
+      <section className="relative py-32 bg-primary text-white overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=1920"
           alt="Professional at Work"

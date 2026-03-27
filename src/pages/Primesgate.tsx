@@ -2,14 +2,14 @@ import { motion } from "motion/react";
 import { CheckCircle2, MapPin, Mountain, Wind, ShieldCheck, TrendingUp, Users, Star, ArrowRight, Calendar, CreditCard, FileText } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
-const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+const WHATSAPP_LINK = "https://wa.link/jy1wau";
 
 const plotSizes = [
-  { size: "150sqm", type: "three bedroom terrace duplex" },
-  { size: "250sqm", type: "four bedroom semi detached duplex" },
-  { size: "350sqm", type: "four bedroom fully detached duplex" },
-  { size: "500sqm", type: "five bedroom fully detached duplex" },
-  { size: "1000sqm", type: "six unit of three bedroom block of flat" }
+  { size: "150sqm", type: "three bedroom terrace duplex", price: "₦7,481,250" },
+  { size: "250sqm", type: "four bedroom semi detached duplex", price: "₦12,468,750" },
+  { size: "350sqm", type: "four bedroom fully detached duplex", price: "₦14,960,937" },
+  { size: "500sqm", type: "five bedroom fully detached duplex", price: "₦25,000,000" },
+  { size: "1000sqm", type: "six unit of three bedroom block of flat", price: "₦50,000,000" }
 ];
 
 const testimonials = [
@@ -27,9 +27,9 @@ const testimonials = [
 
 export default function Primesgate() {
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden pt-20">
         <div className="absolute inset-0 opacity-30">
           <img
             src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920"
@@ -230,22 +230,27 @@ export default function Primesgate() {
             <p className="text-gray-400">All plots are within planned residential demarcation. You choose actual position within layout.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {plotSizes.map((plot, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-10 rounded-3xl text-center hover:bg-white/10 transition-all group">
-                <h3 className="font-serif text-3xl font-bold mb-4 text-secondary">{plot.size}</h3>
-                <p className="text-lg md:text-xl font-medium mb-8 text-white/90">{plot.type}</p>
-                <a
-                  href={WHATSAPP_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full bg-white text-primary py-4 rounded-xl font-bold group-hover:bg-secondary transition-colors"
-                >
-                  Reserve Now
-                </a>
-              </div>
-            ))}
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {plotSizes.map((plot, i) => (
+                <div key={i} className="bg-white/5 border border-white/10 p-10 rounded-3xl text-center hover:bg-white/10 transition-all group">
+                  <h3 className="font-serif text-3xl font-bold mb-2 text-secondary">{plot.size}</h3>
+                  <p className="text-xl font-bold text-white mb-4">{plot.price}</p>
+                  <p className="text-lg font-medium mb-8 text-white/70">{plot.type}</p>
+                  <a
+                    href={WHATSAPP_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full bg-white text-primary py-4 rounded-xl font-bold group-hover:bg-secondary transition-colors"
+                  >
+                    Reserve Now
+                  </a>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-secondary font-bold text-lg">Note: These prices take effect from 31st March</p>
+            </div>
 
           <div className="mt-16 bg-white/5 p-10 rounded-3xl border border-white/10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">

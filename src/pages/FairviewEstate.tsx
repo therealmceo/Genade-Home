@@ -8,12 +8,12 @@ const plotOptions = [
 ];
 
 export default function FairviewEstate() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/8sqaag";
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -24,7 +24,7 @@ export default function FairviewEstate() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -108,7 +108,7 @@ export default function FairviewEstate() {
               </div>
             </div>
             <div className="relative">
-              <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Fairview Estate Plan" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Fairview Estate Plan" className="rounded-2xl shadow-xl" referrerPolicy="no-referrer" />
               <div className="absolute -bottom-6 -right-6 bg-primary p-8 rounded-2xl hidden md:block">
                 <p className="text-secondary font-bold text-xl">Structured Living</p>
                 <p className="text-white/80 text-sm">Order, comfort, and value</p>

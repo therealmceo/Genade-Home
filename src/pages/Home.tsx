@@ -18,42 +18,46 @@ const estates = [
     location: "Airport Road, Before Centenary City, Abuja",
     title: "FCDA C of O | Presale",
     prices: [
-      "150sqm: three bedroom terrace duplex",
-      "250sqm: four bedroom semi detached duplex",
-      "350sqm: four bedroom fully detached duplex",
-      "500sqm: five bedroom fully detached duplex",
-      "1000sqm: six unit of three bedroom block of flat"
+      "150sqm: three bedroom terrace duplex — ₦7,481,250",
+      "250sqm: four bedroom semi detached duplex — ₦12,468,750",
+      "350sqm: four bedroom fully detached duplex — ₦14,960,937",
+      "500sqm: five bedroom fully detached duplex — ₦25,000,000",
+      "1000sqm: six unit of three bedroom block of flat — ₦50,000,000",
+      "The price takes effect from 31st March"
     ],
     description: "A strategically located estate along the Airport Road growth corridor, designed for future homeowners and investors positioning early.",
     image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=800",
-    link: "/primesgate"
+    link: "/primesgate",
+    whatsapp: "https://wa.link/jy1wau"
   },
   {
     name: "The Verdant",
     location: "Behind Centenary City, Kuje, Abuja",
     title: "Presale",
     prices: [
-      "180sqm: 2 bedroom semi detached bungalow",
-      "250sqm: 3 bedroom fully detached bungalow"
+      "180sqm: 2 bedroom semi detached bungalow — ₦3.25M",
+      "250sqm: 3 bedroom fully detached bungalow — ₦4.55M"
     ],
     description: "An emerging residential community in the fast-developing Kuje axis, ideal for buyers seeking affordable entry into Abuja property.",
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
-    link: "/the-verdant"
+    link: "/the-verdant",
+    whatsapp: "https://wa.link/wqli16"
   },
   {
     name: "Addis City",
     location: "Sheretti Kabusa, Abuja",
     title: "FCDA C of O Fully Paid",
     prices: [
-      "150sqm: three bedroom terrace duplex",
-      "250sqm: four bedroom semi detached duplex",
-      "350sqm: four bedroom fully detached duplex",
-      "500sqm: five bedroom fully detached duplex",
-      "750sqm: six unit of two bedroom block of flat"
+      "150sqm: three bedroom terrace duplex — ₦5.85M",
+      "250sqm: four bedroom semi detached duplex — ₦9.75M",
+      "350sqm: four bedroom fully detached duplex — ₦13.65M",
+      "500sqm: five bedroom fully detached duplex — ₦19.5M",
+      "750sqm: six unit of two bedroom block of flat — ₦37.05M"
     ],
     description: "A fully secured estate in Kabusa offering structured residential planning within one of Abuja’s expanding urban belts.",
     image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
-    link: "/addis-city"
+    link: "/addis-city",
+    whatsapp: "https://wa.link/a9moco"
   },
   {
     name: "White Plains",
@@ -65,7 +69,8 @@ const estates = [
     ],
     description: "A premium residential development in Galadimawa designed for buyers seeking finished homes in a prime city location.",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
-    link: "/white-plains"
+    link: "/white-plains",
+    whatsapp: "https://wa.link/lt4ohs"
   },
   {
     name: "Peace Ville",
@@ -76,18 +81,20 @@ const estates = [
     ],
     description: "A family-friendly development in Lokogoma combining accessibility with residential comfort.",
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
-    link: "/peace-ville"
+    link: "/peace-ville",
+    whatsapp: "https://wa.link/0fajj5"
   },
   {
     name: "Vine City",
     location: "Apo Wassa, Abuja",
     title: "Presale",
     prices: [
-      "450sqm: five bedroom fully detached duplex"
+      "450sqm: five bedroom fully detached duplex - ₦19.2M"
     ],
     description: "A premium residential community in the strategic Apo Wassa axis, offering high-value positioning within Abuja’s urban belt.",
     image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800",
-    link: "/vine-city"
+    link: "/vine-city",
+    whatsapp: "https://wa.link/0ch503"
   },
   {
     name: "Fairview Estate",
@@ -100,7 +107,8 @@ const estates = [
     ],
     description: "A modern residential development in Kuje designed for comfort and contemporary living.",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800",
-    link: "/fairview-estate"
+    link: "/fairview-estate",
+    whatsapp: "https://wa.link/8sqaag"
   }
 ];
 
@@ -128,9 +136,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden pt-20">
         <div className="absolute inset-0">
           <AnimatePresence mode="wait">
             <motion.img
@@ -287,7 +295,7 @@ export default function Home() {
                       View Estate
                     </Link>
                     <a
-                      href={WHATSAPP_LINK}
+                      href={estate.whatsapp}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-1 border border-primary text-primary py-3 rounded-lg text-center text-sm font-bold hover:bg-primary hover:text-white transition-all"
