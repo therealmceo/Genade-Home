@@ -30,7 +30,7 @@ const locations = [
 ];
 
 export default function About() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/0d983p";
 
   return (
     <div>

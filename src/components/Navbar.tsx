@@ -33,7 +33,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const WHATSAPP_LINK = "https://wa.link/0d983p";
 
   return (
     <nav

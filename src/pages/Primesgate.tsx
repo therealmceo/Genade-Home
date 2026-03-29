@@ -2,6 +2,8 @@ import { motion } from "motion/react";
 import { CheckCircle2, MapPin, Mountain, Wind, ShieldCheck, TrendingUp, Users, Star, ArrowRight, Calendar, CreditCard, FileText } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
+const ADVISOR_LINK = "https://wa.link/0d983p";
+const INSPECTION_LINK = "https://wa.link/1jtbqx";
 const WHATSAPP_LINK = "https://wa.link/jy1wau";
 
 const plotSizes = [
@@ -61,7 +63,7 @@ export default function Primesgate() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href={WHATSAPP_LINK}
+                href={INSPECTION_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-secondary text-primary px-10 py-5 rounded-full font-bold text-lg flex items-center justify-center space-x-2 hover:scale-105 transition-transform shadow-xl"
@@ -102,7 +104,7 @@ export default function Primesgate() {
               </div>
               <div className="pt-8">
                 <a
-                  href={WHATSAPP_LINK}
+                  href={INSPECTION_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex bg-primary text-secondary px-8 py-4 rounded-full font-bold hover:bg-primary/90 transition-colors"

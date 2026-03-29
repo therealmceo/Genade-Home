@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Youtube, Instagram, Facebook, Twitter, Send, MessageCircle } from "lucide-react";
 
 export default function Footer() {
-  const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+  const ADVISOR_LINK = "https://wa.link/0d983p";
+  const INSPECTION_LINK = "https://wa.link/1jtbqx";
+  const GROUP_LINK = "https://wa.link/wccfts";
 
   return (
     <footer className="bg-primary text-white pt-16 pb-8">
@@ -54,8 +56,8 @@ export default function Footer() {
               <li><Link to="/white-plains" className="hover:text-secondary transition-colors">White Plains</Link></li>
               <li><Link to="/fairview-estate" className="hover:text-secondary transition-colors">Fairview Estate</Link></li>
               <li><Link to="/webinar" className="hover:text-secondary transition-colors">Webinar Training</Link></li>
-              <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Book Inspection</a></li>
-              <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Speak With Advisor</a></li>
+              <li><a href={INSPECTION_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Book Inspection</a></li>
+              <li><a href={ADVISOR_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Speak With Advisor</a></li>
             </ul>
           </div>
 
@@ -77,7 +79,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <MessageCircle className="text-secondary shrink-0" size={18} />
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">WhatsApp Support</a>
+                <a href={ADVISOR_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">WhatsApp Support</a>
               </li>
             </ul>
           </div>
@@ -89,7 +91,7 @@ export default function Footer() {
               Stay updated with our latest estate launches and investment opportunities.
             </p>
             <a
-              href={WHATSAPP_LINK}
+              href={GROUP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full bg-secondary text-primary py-3 rounded-lg text-center font-bold hover:bg-opacity-90 transition-all"

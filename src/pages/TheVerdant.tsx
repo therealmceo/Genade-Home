@@ -7,6 +7,8 @@ const plotOptions = [
 ];
 
 export default function TheVerdant() {
+  const ADVISOR_LINK = "https://wa.link/0d983p";
+  const INSPECTION_LINK = "https://wa.link/1jtbqx";
   const WHATSAPP_LINK = "https://wa.link/wqli16";
 
   return (
@@ -49,7 +51,7 @@ export default function TheVerdant() {
                 <span>Request Brochure</span>
               </a>
               <a 
-                href={WHATSAPP_LINK}
+                href={INSPECTION_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold flex items-center justify-center space-x-2 hover:bg-white/20 transition-all"
@@ -228,7 +230,7 @@ export default function TheVerdant() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a 
-              href={WHATSAPP_LINK}
+              href={ADVISOR_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-secondary text-primary px-8 py-4 rounded-full font-bold flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
@@ -237,7 +239,7 @@ export default function TheVerdant() {
               <span>Speak With Advisor</span>
             </a>
             <a 
-              href={WHATSAPP_LINK}
+              href={INSPECTION_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white text-primary px-8 py-4 rounded-full font-bold flex items-center justify-center space-x-2 hover:bg-gray-100 transition-all"

@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { CheckCircle2, ArrowRight, MessageSquare, MapPin, ShieldCheck, TrendingUp, Users, Star } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
-const WHATSAPP_LINK = "https://wa.me/+2348143999430";
+const ADVISOR_LINK = "https://wa.link/0d983p";
+const INSPECTION_LINK = "https://wa.link/1jtbqx";
 
 const heroImages = [
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920",
@@ -205,7 +206,7 @@ export default function Home() {
                 <ArrowRight size={20} />
               </Link>
               <a
-                href={WHATSAPP_LINK}
+                href={INSPECTION_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center space-x-2 hover:bg-white/30 transition-all"
@@ -334,7 +335,7 @@ export default function Home() {
                 ))}
               </div>
               <a
-                href={WHATSAPP_LINK}
+                href={ADVISOR_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 text-secondary font-bold text-lg hover:translate-x-2 transition-transform"
@@ -502,7 +503,7 @@ export default function Home() {
                 Explore Available Properties
               </Link>
               <a
-                href={WHATSAPP_LINK}
+                href={ADVISOR_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white text-primary px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform"
@@ -510,7 +511,7 @@ export default function Home() {
                 Speak With Advisor
               </a>
               <a
-                href={WHATSAPP_LINK}
+                href={INSPECTION_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-primary text-white border border-white/20 px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform"
