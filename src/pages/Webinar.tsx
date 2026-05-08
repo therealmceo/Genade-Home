@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { CheckCircle2, XCircle, MessageSquare, ArrowRight, Play, Users, Clock, ShieldCheck, Star, MapPin, TrendingUp } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
-const WHATSAPP_LINK = "https://wa.link/wccfts";
+const WHATSAPP_LINK = "https://chat.whatsapp.com/IptjhB7MDfm9oesnCwtTvy?mode=gi_t";
 
 const testimonials = [
   {
@@ -56,7 +56,7 @@ export default function Webinar() {
                 className="inline-flex bg-secondary text-primary px-10 py-5 rounded-full font-black text-xl flex items-center justify-center space-x-3 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(212,175,55,0.3)]"
               >
                 <Play size={24} fill="currentColor" />
-                <span>CLICK THE LINK TO HAVE ACCESS TO THE WEBINAR</span>
+                <span>CLICK HERE TO HAVE ACCESS TO THE WEBINAR</span>
               </a>
               <p className="text-sm text-secondary font-bold animate-pulse">
                 Limited slots available — secure your spot instantly
