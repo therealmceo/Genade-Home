@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { CheckCircle2, XCircle, MessageSquare, ArrowRight, Play, Users, Clock, ShieldCheck, Star, MapPin, TrendingUp } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
-const WHATSAPP_LINK = "https://chat.whatsapp.com/IptjhB7MDfm9oesnCwtTvy?mode=gi_t";
+const WHATSAPP_LINK = "https://chat.whatsapp.com/JYt0mSunVH0KzRD02qN1Z7?mode=gi_t";
 
 const testimonials = [
   {
