@@ -11,6 +11,7 @@ import WhitePlains from "@/src/pages/WhitePlains";
 import AddisCity from "@/src/pages/AddisCity";
 import TheVerdant from "@/src/pages/TheVerdant";
 import FairviewEstate from "@/src/pages/FairviewEstate";
+import SummitRegistration from "@/src/pages/SummitRegistration";
 import PageTransition from "@/src/components/PageTransition";
 
 export default function App() {
@@ -31,6 +32,8 @@ export default function App() {
               <Route path="/the-verdant" element={<TheVerdant />} />
               <Route path="/fairview-estate" element={<FairviewEstate />} />
               <Route path="/webinar" element={<Webinar />} />
+              <Route path="/summit-registration" element={<SummitRegistration />} />
+              <Route path="/summit" element={<SummitRegistration />} />
             </Routes>
           </PageTransition>
         </main>

@@ -56,6 +56,7 @@ export default function Footer() {
               <li><Link to="/white-plains" className="hover:text-secondary transition-colors">White Plains</Link></li>
               <li><Link to="/fairview-estate" className="hover:text-secondary transition-colors">Fairview Estate</Link></li>
               <li><Link to="/webinar" className="hover:text-secondary transition-colors">Webinar Training</Link></li>
+              <li><Link to="/summit-registration" className="hover:text-secondary transition-colors font-semibold text-secondary">Summit Registration</Link></li>
               <li><a href={INSPECTION_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Book Inspection</a></li>
               <li><a href={ADVISOR_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Speak With Advisor</a></li>
             </ul>
