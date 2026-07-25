@@ -72,7 +72,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="text-secondary shrink-0" size={18} />
-                <a href="mailto:info@genadehome.com" className="hover:text-secondary transition-colors">info@genadehome.com</a>
+                <a href="mailto:Genadehomes@gmail.com" className="hover:text-secondary transition-colors">Genadehomes@gmail.com</a>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="text-secondary shrink-0" size={18} />

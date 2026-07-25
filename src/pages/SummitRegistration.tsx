@@ -19,7 +19,7 @@ import {
 
 export default function SummitRegistration() {
   const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/Fe5BZsqVteM9n9TzS5ybp0?s=cl&p=i&ilr=0&amv=1";
-  const GENADE_EMAIL = "info@genadehome.com";
+  const GENADE_EMAIL = "Genadehomes@gmail.com";
 
   // Form State
   const [fullName, setFullName] = useState("");
