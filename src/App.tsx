@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "@/src/components/Navbar";
 import Footer from "@/src/components/Footer";
 import Home from "@/src/pages/Home";
@@ -14,9 +15,28 @@ import FairviewEstate from "@/src/pages/FairviewEstate";
 import SummitRegistration from "@/src/pages/SummitRegistration";
 import PageTransition from "@/src/components/PageTransition";
 
+declare global {
+  interface Window {
+    fbq?: (action: string, event: string) => void;
+  }
+}
+
+function PixelTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "PageView");
+    }
+  }, [location.pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <Router>
+      <PixelTracker />
       <div className="min-h-screen flex flex-col font-sans">
         <Navbar />
         <main className="flex-grow">
