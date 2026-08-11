@@ -1,4 +1,30 @@
 import { Resend } from "resend";
+import dotenv from "dotenv";
+
+// Load local environment variables if available
+dotenv.config();
+
+/**
+ * Safely retrieves an environment variable dynamically at runtime.
+ * Bracket notation process.env[key] prevents static build-time inlining/replacement.
+ */
+function getEnv(key: string, defaultValue: string = ""): string {
+  const possibleKeys = [
+    key,
+    `VITE_${key}`,
+    `VERCEL_${key}`,
+    `NEXT_PUBLIC_${key}`,
+  ];
+
+  for (const k of possibleKeys) {
+    const val = process.env[k];
+    if (val && typeof val === "string" && val.trim().length > 0) {
+      return val.trim().replace(/^["']|["']$/g, "");
+    }
+  }
+
+  return defaultValue;
+}
 
 function sanitize(str: unknown): string {
   if (typeof str !== "string") return "";
@@ -65,18 +91,18 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ success: false, message: "Please select an option describing your status." });
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
+    const apiKey = getEnv("RESEND_API_KEY") || getEnv("RESEND_KEY");
     if (!apiKey) {
-      console.error("[ERROR] RESEND_API_KEY environment variable is not defined.");
+      console.error("[ERROR] RESEND_API_KEY is not defined in process.env at runtime.");
       return res.status(500).json({
         success: false,
-        message: "Server configuration issue: RESEND_API_KEY is not configured on the server. Please add it to your Vercel environment variables.",
+        message: "Server configuration issue: RESEND_API_KEY is not configured on the server. Please check your Vercel environment variables.",
       });
     }
 
     const resend = new Resend(apiKey);
-    const recipientEmail = process.env.RECIPIENT_EMAIL || "Genadehomes@gmail.com";
-    const senderEmail = process.env.SENDER_EMAIL || "Abuja Realtors Summit <onboarding@resend.dev>";
+    const recipientEmail = getEnv("RECIPIENT_EMAIL", "Genadehomes@gmail.com");
+    const senderEmail = getEnv("SENDER_EMAIL", "Abuja Realtors Summit <onboarding@resend.dev>");
 
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
@@ -139,3 +165,4 @@ export default async function handler(req: any, res: any) {
     });
   }
 }
+
