@@ -37,7 +37,9 @@ export default function SummitRegistration() {
 
   // UI States
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState("");
+  const [serverError, setServerError] = useState("");
 
   const hearAboutOptions = [
     "Instagram",
@@ -78,9 +80,10 @@ export default function SummitRegistration() {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setValidationError("");
+    setServerError("");
 
     // Required fields validation (Q1, Q2, Q3, Q6)
     if (!fullName.trim()) {
@@ -100,39 +103,49 @@ export default function SummitRegistration() {
       return;
     }
 
-    // Compose formatted text for email notification / mailto
     const finalHearAbout = hearAbout === "Other" && hearAboutOther.trim() 
       ? `Other (${hearAboutOther.trim()})` 
       : hearAbout;
 
-    const finalChallenges = challenges.map(c => c === "Other" && challengeOther.trim() ? `Other (${challengeOther.trim()})` : c).join(", ");
+    const finalChallenges = challenges.map(c => c === "Other" && challengeOther.trim() ? `Other (${challengeOther.trim()})` : c);
 
-    const emailSubject = encodeURIComponent(`New Summit Registration: ${fullName}`);
-    const emailBody = encodeURIComponent(
-      `ABUJA REALTORS SUCCESS LAUNCHPAD SUMMIT REGISTRATION\n\n` +
-      `SECTION 1: YOUR DETAILS\n` +
-      `1. Full Name: ${fullName}\n` +
-      `2. Email Address: ${email}\n` +
-      `3. Phone / WhatsApp Number: ${phone}\n` +
-      `4. City / State: ${cityState || "N/A"}\n` +
-      `5. How heard: ${finalHearAbout || "N/A"}\n\n` +
-      `SECTION 2: YOUR REAL ESTATE JOURNEY\n` +
-      `6. Describes you: ${description}\n` +
-      `7. Experience: ${experience || "N/A"}\n` +
-      `8. Challenges: ${finalChallenges || "None selected"}\n` +
-      `9. Hope to gain: ${hopeToGain || "N/A"}\n\n` +
-      `Submitted at: ${new Date().toLocaleString()}`
-    );
+    setIsSubmitting(true);
 
-    // Trigger mailto link silently in background or window
-    const mailtoUrl = `mailto:${GENADE_EMAIL}?subject=${emailSubject}&body=${emailBody}`;
-    
-    // Open mailto trigger
-    window.location.href = mailtoUrl;
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          cityState: cityState.trim(),
+          hearAbout: finalHearAbout,
+          description,
+          experience,
+          challenges: finalChallenges,
+          hopeToGain: hopeToGain.trim(),
+        }),
+      });
 
-    // Show success screen
-    setIsSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        setServerError(
+          data.message || "We couldn't submit your information. Please try again."
+        );
+      }
+    } catch (err) {
+      console.error("Form submission error:", err);
+      setServerError("We couldn't submit your information. Please check your internet connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -186,6 +199,13 @@ export default function SummitRegistration() {
                   <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center gap-3 text-red-700 text-sm font-medium">
                     <AlertCircle className="shrink-0 text-red-500" size={20} />
                     <span>{validationError}</span>
+                  </div>
+                )}
+
+                {serverError && (
+                  <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center gap-3 text-red-700 text-sm font-medium">
+                    <AlertCircle className="shrink-0 text-red-500" size={20} />
+                    <span>{serverError}</span>
                   </div>
                 )}
 
@@ -448,13 +468,23 @@ export default function SummitRegistration() {
                   <div className="pt-4">
                     <button
                       type="submit"
-                      className="w-full bg-primary text-secondary hover:bg-opacity-95 font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                      disabled={isSubmitting}
+                      className="w-full bg-primary text-secondary hover:bg-opacity-95 disabled:opacity-60 disabled:cursor-not-allowed font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99]"
                     >
-                      <Send size={20} />
-                      <span>Submit Registration</span>
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                          <span>Sending...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send size={20} />
+                          <span>Submit Registration</span>
+                        </>
+                      )}
                     </button>
                     <p className="text-center text-xs text-gray-500 mt-3">
-                      By submitting, your registration details will be logged and submitted directly to Genade Homes.
+                      By submitting, your registration details will be submitted securely to Genade Homes.
                     </p>
                   </div>
                 </form>
