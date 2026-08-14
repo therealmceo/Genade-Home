@@ -66,18 +66,8 @@ export default async function handler(req: any, res: any) {
     const phone = sanitize(body.phone?.trim());
     const cityState = sanitize(body.cityState?.trim());
     const hearAbout = sanitize(body.hearAbout?.trim());
-    const description = sanitize(body.description?.trim());
-    const experience = sanitize(body.experience?.trim());
-    const hopeToGain = sanitize(body.hopeToGain?.trim());
 
-    let challenges = "";
-    if (Array.isArray(body.challenges)) {
-      challenges = body.challenges.map((c: unknown) => sanitize(String(c))).join(", ");
-    } else if (typeof body.challenges === "string") {
-      challenges = sanitize(body.challenges);
-    }
-
-    // Server-side required field validation
+    // Server-side required field validation (Section 1)
     if (!fullName) {
       return res.status(400).json({ success: false, message: "Full Name is required." });
     }
@@ -86,9 +76,6 @@ export default async function handler(req: any, res: any) {
     }
     if (!phone) {
       return res.status(400).json({ success: false, message: "Phone / WhatsApp Number is required." });
-    }
-    if (!description) {
-      return res.status(400).json({ success: false, message: "Please select an option describing your status." });
     }
 
     const apiKey = getEnv("RESEND_API_KEY") || getEnv("RESEND_KEY");
@@ -107,26 +94,18 @@ export default async function handler(req: any, res: any) {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
         <div style="background-color: #0F2A1D; color: #D4AF37; padding: 24px; text-align: center;">
-          <h2 style="margin: 0; font-size: 22px; font-weight: 800; tracking: 1px;">ABUJA REALTORS SUCCESS LAUNCHPAD</h2>
-          <p style="margin: 6px 0 0 0; font-size: 14px; color: #ffffff;">Official Summit Registration Form Submission</p>
+          <h2 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px;">ABUJA REALTORS SUCCESS LAUNCHPAD</h2>
+          <p style="margin: 6px 0 0 0; font-size: 14px; color: #ffffff;">Official Summit Registration Details</p>
         </div>
 
         <div style="padding: 24px; color: #1a202c; line-height: 1.6;">
-          <div style="background-color: #f8fafc; border-left: 4px solid #D4AF37; padding: 14px; margin-bottom: 20px; border-radius: 0 8px 8px 0;">
-            <h3 style="margin: 0 0 10px 0; color: #0F2A1D; font-size: 16px;">SECTION 1: Participant Contact Details</h3>
-            <p style="margin: 4px 0;"><strong>Full Name:</strong> ${fullName}</p>
-            <p style="margin: 4px 0;"><strong>Email Address:</strong> <a href="mailto:${email}" style="color: #0F2A1D; text-decoration: underline;">${email}</a></p>
-            <p style="margin: 4px 0;"><strong>Phone / WhatsApp:</strong> ${phone}</p>
-            <p style="margin: 4px 0;"><strong>City / State:</strong> ${cityState || "N/A"}</p>
-            <p style="margin: 4px 0;"><strong>How Heard About Summit:</strong> ${hearAbout || "N/A"}</p>
-          </div>
-
-          <div style="background-color: #f8fafc; border-left: 4px solid #0F2A1D; padding: 14px; margin-bottom: 20px; border-radius: 0 8px 8px 0;">
-            <h3 style="margin: 0 0 10px 0; color: #0F2A1D; font-size: 16px;">SECTION 2: Real Estate Background</h3>
-            <p style="margin: 4px 0;"><strong>Profile / Status:</strong> ${description}</p>
-            <p style="margin: 4px 0;"><strong>Years of Experience:</strong> ${experience || "N/A"}</p>
-            <p style="margin: 4px 0;"><strong>Biggest Challenge(s):</strong> ${challenges || "None selected"}</p>
-            <p style="margin: 4px 0;"><strong>Hope to Gain:</strong> ${hopeToGain || "N/A"}</p>
+          <div style="background-color: #f8fafc; border-left: 4px solid #D4AF37; padding: 18px; margin-bottom: 20px; border-radius: 0 8px 8px 0;">
+            <h3 style="margin: 0 0 12px 0; color: #0F2A1D; font-size: 17px;">Participant Details</h3>
+            <p style="margin: 6px 0; font-size: 15px;"><strong>Full Name:</strong> ${fullName}</p>
+            <p style="margin: 6px 0; font-size: 15px;"><strong>Email Address:</strong> <a href="mailto:${email}" style="color: #0F2A1D; text-decoration: underline;">${email}</a></p>
+            <p style="margin: 6px 0; font-size: 15px;"><strong>Phone / WhatsApp:</strong> ${phone}</p>
+            <p style="margin: 6px 0; font-size: 15px;"><strong>City / State:</strong> ${cityState || "N/A"}</p>
+            <p style="margin: 6px 0; font-size: 15px;"><strong>How Heard About Summit:</strong> ${hearAbout || "N/A"}</p>
           </div>
         </div>
 

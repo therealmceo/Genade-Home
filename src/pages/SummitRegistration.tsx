@@ -6,34 +6,24 @@ import {
   User, 
   Mail, 
   Phone, 
-  Building2, 
   Send, 
   CheckCircle2, 
   MessageSquare, 
   Sparkles, 
   AlertCircle,
-  Clock,
-  Award,
-  Users
+  Award
 } from "lucide-react";
 
 export default function SummitRegistration() {
   const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/Fe5BZsqVteM9n9TzS5ybp0?s=cl&p=i&ilr=0&amv=1";
-  const GENADE_EMAIL = "Genadehomes@gmail.com";
 
-  // Form State
+  // Form State (Section 1: Participant Details)
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [cityState, setCityState] = useState("");
   const [hearAbout, setHearAbout] = useState("");
   const [hearAboutOther, setHearAboutOther] = useState("");
-
-  const [description, setDescription] = useState("");
-  const [experience, setExperience] = useState("");
-  const [challenges, setChallenges] = useState<string[]>([]);
-  const [challengeOther, setChallengeOther] = useState("");
-  const [hopeToGain, setHopeToGain] = useState("");
 
   // UI States
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -49,43 +39,12 @@ export default function SummitRegistration() {
     "Other"
   ];
 
-  const descriptionOptions = [
-    "Practicing real estate professional",
-    "Aspiring realtor (just starting out)",
-    "Considering real estate as a secondary source of income",
-    "General public — exploring a career or wealth-building opportunity"
-  ];
-
-  const experienceOptions = [
-    "Not applicable / just starting out",
-    "Less than 1 year",
-    "1–3 years",
-    "4–7 years",
-    "8+ years"
-  ];
-
-  const challengeOptions = [
-    "Handling rejection",
-    "Slow sales / inconsistent income",
-    "Building a long-term, sustainable career",
-    "Getting started / breaking into the industry",
-    "Other"
-  ];
-
-  const handleChallengeToggle = (option: string) => {
-    if (challenges.includes(option)) {
-      setChallenges(challenges.filter((item) => item !== option));
-    } else {
-      setChallenges([...challenges, option]);
-    }
-  };
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setValidationError("");
     setServerError("");
 
-    // Required fields validation (Q1, Q2, Q3, Q6)
+    // Required fields validation (Full Name, Email, Phone/WhatsApp)
     if (!fullName.trim()) {
       setValidationError("Please enter your Full Name.");
       return;
@@ -98,16 +57,10 @@ export default function SummitRegistration() {
       setValidationError("Please enter your Phone / WhatsApp Number.");
       return;
     }
-    if (!description) {
-      setValidationError("Please select which option best describes you.");
-      return;
-    }
 
     const finalHearAbout = hearAbout === "Other" && hearAboutOther.trim() 
       ? `Other (${hearAboutOther.trim()})` 
       : hearAbout;
-
-    const finalChallenges = challenges.map(c => c === "Other" && challengeOther.trim() ? `Other (${challengeOther.trim()})` : c);
 
     setIsSubmitting(true);
 
@@ -123,10 +76,6 @@ export default function SummitRegistration() {
           phone: phone.trim(),
           cityState: cityState.trim(),
           hearAbout: finalHearAbout,
-          description,
-          experience,
-          challenges: finalChallenges,
-          hopeToGain: hopeToGain.trim(),
         }),
       });
 
@@ -209,15 +158,15 @@ export default function SummitRegistration() {
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-10">
-                  {/* SECTION 1: Your Details */}
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  {/* Your Details */}
                   <div className="bg-gray-50/80 p-6 sm:p-8 rounded-xl border border-gray-200/80">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
-                        1
+                        <User size={16} />
                       </div>
                       <h2 className="text-xl font-serif font-bold text-primary">
-                        SECTION 1: Your Details
+                        Your Details
                       </h2>
                     </div>
                     <p className="text-xs text-gray-500 mb-6 ml-11">
@@ -303,7 +252,7 @@ export default function SummitRegistration() {
                         </label>
                         <div className="space-y-2.5">
                           {hearAboutOptions.map((opt) => (
-                            <label
+                              <label
                               key={opt}
                               className={`flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
                                 hearAbout === opt 
@@ -336,136 +285,8 @@ export default function SummitRegistration() {
                     </div>
                   </div>
 
-                  {/* SECTION 2: Your Real Estate Journey */}
-                  <div className="bg-gray-50/80 p-6 sm:p-8 rounded-xl border border-gray-200/80">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
-                        2
-                      </div>
-                      <h2 className="text-xl font-serif font-bold text-primary">
-                        SECTION 2: Your Real Estate Journey
-                      </h2>
-                    </div>
-                    <p className="text-xs text-gray-500 mb-6 ml-11">
-                      This helps our speakers understand who is in the room and prepare content that speaks directly to you.
-                    </p>
-
-                    <div className="space-y-6">
-                      {/* Q6: Which best describes you? */}
-                      <div>
-                        <label className="block text-sm font-bold text-gray-800 mb-3">
-                          6. Which best describes you? <span className="text-red-500">*</span>
-                        </label>
-                        <div className="space-y-2.5">
-                          {descriptionOptions.map((opt) => (
-                            <label
-                              key={opt}
-                              className={`flex items-start gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
-                                description === opt 
-                                  ? "bg-primary/5 border-primary text-primary font-medium shadow-sm" 
-                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="description"
-                                required
-                                value={opt}
-                                checked={description === opt}
-                                onChange={(e) => setDescription(e.target.value)}
-                                className="w-4 h-4 mt-0.5 text-primary focus:ring-primary border-gray-300"
-                              />
-                              <span className="text-sm leading-snug">{opt}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Q7: Years of Experience */}
-                      <div>
-                        <label className="block text-sm font-bold text-gray-800 mb-3">
-                          7. If you are already practicing, how many years of experience do you have?
-                        </label>
-                        <div className="space-y-2.5">
-                          {experienceOptions.map((opt) => (
-                            <label
-                              key={opt}
-                              className={`flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
-                                experience === opt 
-                                  ? "bg-primary/5 border-primary text-primary font-medium shadow-sm" 
-                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="experience"
-                                value={opt}
-                                checked={experience === opt}
-                                onChange={(e) => setExperience(e.target.value)}
-                                className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
-                              />
-                              <span className="text-sm">{opt}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Q8: Biggest Challenge */}
-                      <div>
-                        <label className="block text-sm font-bold text-gray-800 mb-1">
-                          8. What is your biggest challenge right now?
-                        </label>
-                        <p className="text-xs text-gray-500 mb-3">(Select all that apply)</p>
-                        <div className="space-y-2.5">
-                          {challengeOptions.map((opt) => (
-                            <label
-                              key={opt}
-                              className={`flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
-                                challenges.includes(opt) 
-                                  ? "bg-primary/5 border-primary text-primary font-medium shadow-sm" 
-                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                              }`}
-                            >
-                              <input
-                                type="checkbox"
-                                value={opt}
-                                checked={challenges.includes(opt)}
-                                onChange={() => handleChallengeToggle(opt)}
-                                className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
-                              />
-                              <span className="text-sm">{opt}</span>
-                            </label>
-                          ))}
-                        </div>
-                        {challenges.includes("Other") && (
-                          <input
-                            type="text"
-                            placeholder="Please describe your challenge"
-                            value={challengeOther}
-                            onChange={(e) => setChallengeOther(e.target.value)}
-                            className="mt-3 w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
-                          />
-                        )}
-                      </div>
-
-                      {/* Q9: What do you hope to gain */}
-                      <div>
-                        <label className="block text-sm font-bold text-gray-800 mb-2">
-                          9. In one or two sentences, what do you hope to gain from this summit?
-                        </label>
-                        <textarea
-                          rows={4}
-                          placeholder="Share your goals and expectations for the summit..."
-                          value={hopeToGain}
-                          onChange={(e) => setHopeToGain(e.target.value)}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm resize-y"
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Submit Button */}
-                  <div className="pt-4">
+                  <div className="pt-2">
                     <button
                       type="submit"
                       disabled={isSubmitting}
