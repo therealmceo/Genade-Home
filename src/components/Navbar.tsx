@@ -137,6 +137,17 @@ export default function Navbar() {
               Summit
             </Link>
 
+            <Link
+              to="/pre-presale"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-secondary",
+                scrolled ? "text-gray-700" : "text-white",
+                (location.pathname === "/pre-presale" || location.pathname === "/presale" || location.pathname === "/pre-presale-interest-form") && "text-secondary font-semibold"
+              )}
+            >
+              Pre-Presale
+            </Link>
+
             <a
               href={WHATSAPP_LINK}
               target="_blank"
@@ -240,6 +251,16 @@ export default function Navbar() {
               )}
             >
               Summit Registration
+            </Link>
+            <Link
+              to="/pre-presale"
+              onClick={() => setIsOpen(false)}
+              className={cn(
+                "block px-3 py-4 text-base font-medium rounded-md",
+                (location.pathname === "/pre-presale" || location.pathname === "/presale" || location.pathname === "/pre-presale-interest-form") ? "text-primary bg-gray-50" : "text-gray-700 hover:text-primary hover:bg-gray-50"
+              )}
+            >
+              Pre-Presale Form
             </Link>
             <div className="pt-4 px-3">
               <a

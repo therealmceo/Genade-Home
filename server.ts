@@ -3,6 +3,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import registerHandler from "./api/register.js";
+import presaleHandler from "./api/presale.js";
 
 dotenv.config();
 
@@ -16,6 +17,11 @@ async function startServer() {
   // API handler for summit registration
   app.use("/api/register", (req, res) => {
     registerHandler(req, res);
+  });
+
+  // API handler for pre-presale package interest form
+  app.use("/api/presale", (req, res) => {
+    presaleHandler(req, res);
   });
 
   // Health check

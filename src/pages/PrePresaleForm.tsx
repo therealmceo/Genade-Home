@@ -1,0 +1,831 @@
+import { useState, FormEvent } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { 
+  Building2, 
+  User, 
+  Mail, 
+  Phone, 
+  Globe, 
+  Send, 
+  CheckCircle2, 
+  MessageSquare, 
+  ShieldCheck, 
+  DollarSign, 
+  FileText, 
+  Briefcase, 
+  HelpCircle,
+  Lock,
+  ChevronRight,
+  AlertCircle
+} from "lucide-react";
+
+export default function PrePresaleForm() {
+  const ADVISOR_WHATSAPP_LINK = "https://wa.link/0d983p";
+
+  // Section 1: Identity & Contact
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+
+  // Section 2: Investor Classification
+  const [socialHandle, setSocialHandle] = useState("");
+  const [investorType, setInvestorType] = useState("");
+  const [investingOnBehalfOf, setInvestingOnBehalfOf] = useState("");
+
+  // Section 3: Investment Details
+  const [investmentTier, setInvestmentTier] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethodOther, setPaymentMethodOther] = useState("");
+
+  // Section 4 & 5: Compliance, KYC & Legal Acknowledgments
+  const [agreeKyc, setAgreeKyc] = useState(false);
+  const [acknowledgeNoSolicitation, setAcknowledgeNoSolicitation] = useState(false);
+  const [readTermsSheet, setReadTermsSheet] = useState(false);
+
+  // Section 6: Optional Information
+  const [hearAbout, setHearAbout] = useState("");
+  const [hearAboutOther, setHearAboutOther] = useState("");
+  const [referralCode, setReferralCode] = useState("");
+  const [notes, setNotes] = useState("");
+
+  // UI States
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationError, setValidationError] = useState("");
+  const [serverError, setServerError] = useState("");
+
+  const investorTypeOptions = [
+    { label: "Individual Investor (High-Net-Worth / Private)", value: "Individual Investor" },
+    { label: "Corporate Entity / Private Enterprise", value: "Corporate Entity" },
+    { label: "Institutional Fund / Asset Manager", value: "Institutional Fund" },
+    { label: "Family Office / Private Syndicate", value: "Family Office / Syndicate" },
+    { label: "Other Entity Structure", value: "Other Entity" },
+  ];
+
+  const investingOnBehalfOptions = [
+    { label: "Investing exclusively on behalf of myself", value: "Myself" },
+    { label: "Investing on behalf of a company, fund, or syndicate", value: "Company / Fund / Syndicate" },
+    { label: "Investing on behalf of private clients or third parties", value: "Clients / Third Parties" },
+  ];
+
+  const investmentTiers = [
+    {
+      id: "tier-1",
+      title: "Tier 1: Strategic Allocation",
+      range: "₦50M – ₦249M",
+      description: "Priority pre-presale unit selection with institutional discounts and phased milestone payments.",
+    },
+    {
+      id: "tier-2",
+      title: "Tier 2: Premium Portfolio Block",
+      range: "₦250M – ₦999M",
+      description: "Multi-unit estate allocation with customized exit strategies and dedicated advisory desk.",
+    },
+    {
+      id: "tier-3",
+      title: "Tier 3: Institutional Anchor",
+      range: "₦1B – ₦10B",
+      description: "Co-development rights, commercial/bulk plot blocks, and prime executive advisory access.",
+    },
+  ];
+
+  const paymentMethods = [
+    "Bank Wire / Direct Transfer (NGN)",
+    "USD / Foreign Currency Direct Wire",
+    "Staged Installments / Milestone-based Payment Plan",
+    "Crypto / Digital Asset Transfer (USDT / USDC)",
+    "Other"
+  ];
+
+  const hearAboutOptions = [
+    "Instagram / Social Media",
+    "Referral from Existing Investor / Colleague",
+    "Real Estate Professional / Realtor",
+    "Private Executive Invitation",
+    "Webinar or Industry Summit",
+    "Other"
+  ];
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setValidationError("");
+    setServerError("");
+
+    // Required Field Validations
+    if (!fullName.trim()) {
+      setValidationError("Please provide your Full Legal Name.");
+      return;
+    }
+    if (!email.trim() || !email.includes("@")) {
+      setValidationError("Please provide a valid Email Address.");
+      return;
+    }
+    if (!phone.trim()) {
+      setValidationError("Please provide your Phone Number with Country Code (e.g. +234, +1, +44).");
+      return;
+    }
+    if (!country.trim()) {
+      setValidationError("Please specify your Country of Residence / Citizenship.");
+      return;
+    }
+    if (!investorType) {
+      setValidationError("Please select your Investor Classification (Individual or Entity).");
+      return;
+    }
+    if (!investingOnBehalfOf) {
+      setValidationError("Please specify whether you are investing on behalf of yourself or others.");
+      return;
+    }
+    if (!investmentTier) {
+      setValidationError("Please select an Intended Investment Tier.");
+      return;
+    }
+
+    const finalPaymentMethod = paymentMethod === "Other" && paymentMethodOther.trim()
+      ? `Other (${paymentMethodOther.trim()})`
+      : paymentMethod;
+
+    if (!finalPaymentMethod) {
+      setValidationError("Please select your Preferred Payment Method.");
+      return;
+    }
+
+    if (!agreeKyc) {
+      setValidationError("You must agree to complete KYC/AML verification if selected for allocation.");
+      return;
+    }
+    if (!acknowledgeNoSolicitation) {
+      setValidationError("Please acknowledge that this form is an expression of interest and does not guarantee allocation.");
+      return;
+    }
+    if (!readTermsSheet) {
+      setValidationError("Please confirm that you have reviewed the preliminary term sheet guidelines.");
+      return;
+    }
+
+    const finalHearAbout = hearAbout === "Other" && hearAboutOther.trim()
+      ? `Other (${hearAboutOther.trim()})`
+      : hearAbout;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/presale", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          country: country.trim(),
+          socialHandle: socialHandle.trim(),
+          investorType,
+          investingOnBehalfOf,
+          investmentTier,
+          paymentMethod: finalPaymentMethod,
+          agreeKyc,
+          acknowledgeNoSolicitation,
+          readTermsSheet,
+          hearAbout: finalHearAbout,
+          referralCode: referralCode.trim(),
+          notes: notes.trim(),
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        setServerError(
+          data.message || "We could not submit your pre-presale interest. Please review the form and try again."
+        );
+      }
+    } catch (err) {
+      console.error("Presale form submission error:", err);
+      setServerError("Network error: Unable to submit your information. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setIsSubmitted(false);
+    setFullName("");
+    setEmail("");
+    setPhone("");
+    setCountry("");
+    setSocialHandle("");
+    setInvestorType("");
+    setInvestingOnBehalfOf("");
+    setInvestmentTier("");
+    setPaymentMethod("");
+    setPaymentMethodOther("");
+    setAgreeKyc(false);
+    setAcknowledgeNoSolicitation(false);
+    setReadTermsSheet(false);
+    setHearAbout("");
+    setHearAboutOther("");
+    setReferralCode("");
+    setNotes("");
+    setValidationError("");
+    setServerError("");
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Header Section */}
+      <section className="relative pt-36 pb-20 sm:pt-40 sm:pb-24 bg-primary text-white overflow-hidden border-b-4 border-secondary">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="inline-flex items-center gap-2 bg-secondary text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4 shadow-sm">
+              <ShieldCheck size={14} /> Confidential Allocation Desk
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-tight text-white mb-4 leading-tight">
+              GENADE PRE-PRESALE PACKAGE FORM
+            </h1>
+            <p className="text-gray-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-6 font-normal leading-relaxed">
+              Early Allocation & Pre-Presale Package Expression of Interest for High-Value & Institutional Real Estate Investors across Abuja's Prime Corridors.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm text-secondary font-medium">
+              <span className="flex items-center gap-1.5 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/10">
+                <Lock size={14} /> Institutional Privacy Guaranteed
+              </span>
+              <span className="flex items-center gap-1.5 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/10">
+                <ShieldCheck size={14} /> Verified KYC/AML Allocation Desk
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Form Content Container */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 -mt-10 sm:-mt-12 mb-20 relative z-20">
+        <AnimatePresence mode="wait">
+          {!isSubmitted ? (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.35 }}
+              className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
+            >
+              {/* Form Process Header */}
+              <div className="bg-gray-50 border-b border-gray-200 px-6 sm:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm">
+                <div className="flex items-center gap-2 font-semibold text-primary">
+                  <ShieldCheck size={18} className="text-secondary shrink-0" />
+                  <span>Private Capital Allocation Process</span>
+                </div>
+                <span className="text-gray-500 font-mono text-xs">
+                  Required fields are marked with <span className="text-red-500 font-bold">*</span>
+                </span>
+              </div>
+
+              <div className="p-6 sm:p-10">
+                {/* Validation Error Banner */}
+                {validationError && (
+                  <div className="mb-6 bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg flex items-center gap-3 text-amber-900 text-sm font-medium">
+                    <AlertCircle className="shrink-0 text-amber-600" size={20} />
+                    <span>{validationError}</span>
+                  </div>
+                )}
+
+                {/* Server Error Banner */}
+                {serverError && (
+                  <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center gap-3 text-red-700 text-sm font-medium">
+                    <AlertCircle className="shrink-0 text-red-500" size={20} />
+                    <span>{serverError}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-10">
+                  {/* SECTION 1: Identity & Contact */}
+                  <div className="border border-gray-200 rounded-xl p-5 sm:p-7 bg-white">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
+                        <User size={16} />
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-serif font-bold text-primary">
+                        1. Identity & Contact Information
+                      </h2>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-6 ml-11">
+                      Please provide your legal contact details for direct investor relations communications.
+                    </p>
+
+                    <div className="space-y-5">
+                      {/* Full Legal Name */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                          Full Legal Name <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Dr. Alexander Chukwuma Ibrahim"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                          />
+                          <User className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
+                        </div>
+                      </div>
+
+                      {/* Email & Phone Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* Email */}
+                        <div>
+                          <label className="block text-sm font-bold text-gray-800 mb-2">
+                            Email Address <span className="text-red-500">*</span>
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="email"
+                              required
+                              placeholder="investor@example.com"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                            />
+                            <Mail className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
+                          </div>
+                        </div>
+
+                        {/* Phone */}
+                        <div>
+                          <label className="block text-sm font-bold text-gray-800 mb-2">
+                            Phone Number (with Country Code) <span className="text-red-500">*</span>
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="tel"
+                              required
+                              placeholder="+234 800 000 0000"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                            />
+                            <Phone className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Country of Residence / Citizenship */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                          Country of Residence / Citizenship <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Nigeria, United Kingdom, United States, Canada, UAE"
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                          />
+                          <Globe className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* SECTION 2: Investor Classification */}
+                  <div className="border border-gray-200 rounded-xl p-5 sm:p-7 bg-white">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
+                        <Briefcase size={16} />
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-serif font-bold text-primary">
+                        2. Investor Classification
+                      </h2>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-6 ml-11">
+                      Enables our capital allocation desk to tailor the structuring and legal onboarding framework.
+                    </p>
+
+                    <div className="space-y-6">
+                      {/* Social Handle */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                          Instagram / LinkedIn Handle <span className="text-gray-400 text-xs font-normal">(Optional for verification)</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. @username or linkedin.com/in/profile"
+                          value={socialHandle}
+                          onChange={(e) => setSocialHandle(e.target.value)}
+                          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm text-gray-900"
+                        />
+                      </div>
+
+                      {/* Individual or Entity */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                          Investor Legal Structure <span className="text-red-500">*</span>
+                        </label>
+                        <div className="space-y-2.5">
+                          {investorTypeOptions.map((opt) => (
+                            <label
+                              key={opt.value}
+                              className={`flex items-center gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
+                                investorType === opt.value
+                                  ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm"
+                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="investorType"
+                                required
+                                value={opt.value}
+                                checked={investorType === opt.value}
+                                onChange={(e) => setInvestorType(e.target.value)}
+                                className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm">{opt.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Investing on behalf of */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                          Are you investing on behalf of yourself or others? <span className="text-red-500">*</span>
+                        </label>
+                        <div className="space-y-2.5">
+                          {investingOnBehalfOptions.map((opt) => (
+                            <label
+                              key={opt.value}
+                              className={`flex items-center gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
+                                investingOnBehalfOf === opt.value
+                                  ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm"
+                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="investingOnBehalfOf"
+                                required
+                                value={opt.value}
+                                checked={investingOnBehalfOf === opt.value}
+                                onChange={(e) => setInvestingOnBehalfOf(e.target.value)}
+                                className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm">{opt.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* SECTION 3: Investment Details */}
+                  <div className="border border-gray-200 rounded-xl p-5 sm:p-7 bg-white">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
+                        <DollarSign size={16} />
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-serif font-bold text-primary">
+                        3. Investment Details & Target Allocation
+                      </h2>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-6 ml-11">
+                      Select your intended capital range and settlement vehicle for priority allocation.
+                    </p>
+
+                    <div className="space-y-6">
+                      {/* Intended Investment Amount / Tiers */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                          Intended Investment Amount (Select Tier Range) <span className="text-red-500">*</span>
+                        </label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {investmentTiers.map((tier) => (
+                            <div
+                              key={tier.id}
+                              onClick={() => setInvestmentTier(tier.range)}
+                              className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                                investmentTier === tier.range
+                                  ? "bg-primary text-white border-secondary shadow-lg"
+                                  : "bg-white border-gray-200 text-gray-800 hover:border-primary/40 hover:bg-gray-50"
+                              }`}
+                            >
+                              <div>
+                                <span className={`text-xs uppercase font-bold tracking-wider block mb-1 ${
+                                  investmentTier === tier.range ? "text-secondary" : "text-primary"
+                                }`}>
+                                  {tier.title}
+                                </span>
+                                <div className="text-xl font-serif font-black tracking-tight mb-2">
+                                  {tier.range}
+                                </div>
+                                <p className={`text-xs leading-relaxed ${
+                                  investmentTier === tier.range ? "text-gray-200" : "text-gray-500"
+                                }`}>
+                                  {tier.description}
+                                </p>
+                              </div>
+
+                              <div className="mt-4 pt-3 border-t border-gray-200/20 flex items-center justify-between text-xs font-semibold">
+                                <span className={investmentTier === tier.range ? "text-secondary" : "text-primary"}>
+                                  {investmentTier === tier.range ? "Selected Tier" : "Select Tier"}
+                                </span>
+                                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                                  investmentTier === tier.range 
+                                    ? "border-secondary bg-secondary text-primary" 
+                                    : "border-gray-300"
+                                }`}>
+                                  {investmentTier === tier.range && <div className="w-2 h-2 rounded-full bg-primary" />}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Preferred Payment Method */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                          Preferred Payment Method <span className="text-red-500">*</span>
+                        </label>
+                        <div className="space-y-2.5">
+                          {paymentMethods.map((method) => (
+                            <label
+                              key={method}
+                              className={`flex items-center gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
+                                paymentMethod === method
+                                  ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm"
+                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="paymentMethod"
+                                required
+                                value={method}
+                                checked={paymentMethod === method}
+                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm">{method}</span>
+                            </label>
+                          ))}
+                        </div>
+
+                        {paymentMethod === "Other" && (
+                          <input
+                            type="text"
+                            placeholder="Please specify preferred payment or treasury method"
+                            value={paymentMethodOther}
+                            onChange={(e) => setPaymentMethodOther(e.target.value)}
+                            className="mt-3 w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* SECTION 4: Compliance, KYC & Legal Acknowledgments */}
+                  <div className="border border-gray-200 rounded-xl p-5 sm:p-7 bg-white">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
+                        <ShieldCheck size={16} />
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-serif font-bold text-primary">
+                        4. Compliance, KYC & Legal Acknowledgments
+                      </h2>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-6 ml-11">
+                      Required regulatory and disclosure acknowledgments for all pre-presale participants.
+                    </p>
+
+                    <div className="space-y-4">
+                      {/* Checkbox 1: KYC/AML */}
+                      <label className="flex items-start gap-3.5 p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer">
+                        <input
+                          type="checkbox"
+                          required
+                          checked={agreeKyc}
+                          onChange={(e) => setAgreeKyc(e.target.checked)}
+                          className="w-5 h-5 mt-0.5 text-primary focus:ring-primary border-gray-300 rounded"
+                        />
+                        <div className="text-sm text-gray-800 leading-snug">
+                          <strong className="text-primary font-bold">KYC / AML Agreement: </strong> 
+                          I agree to complete full KYC/AML verification and provide formal corporate or identification documentation if selected for pre-presale allocation. <span className="text-red-500">*</span>
+                        </div>
+                      </label>
+
+                      {/* Checkbox 2: No solicitation / no guarantee */}
+                      <label className="flex items-start gap-3.5 p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer">
+                        <input
+                          type="checkbox"
+                          required
+                          checked={acknowledgeNoSolicitation}
+                          onChange={(e) => setAcknowledgeNoSolicitation(e.target.checked)}
+                          className="w-5 h-5 mt-0.5 text-primary focus:ring-primary border-gray-300 rounded"
+                        />
+                        <div className="text-sm text-gray-800 leading-snug">
+                          <strong className="text-primary font-bold">Expression of Interest Acknowledgement: </strong> 
+                          I understand this is not a public solicitation and does not guarantee allocation or rights until formal bilateral agreements are executed. <span className="text-red-500">*</span>
+                        </div>
+                      </label>
+
+                      {/* Checkbox 3: Terms sheet */}
+                      <label className="flex items-start gap-3.5 p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer">
+                        <input
+                          type="checkbox"
+                          required
+                          checked={readTermsSheet}
+                          onChange={(e) => setReadTermsSheet(e.target.checked)}
+                          className="w-5 h-5 mt-0.5 text-primary focus:ring-primary border-gray-300 rounded"
+                        />
+                        <div className="text-sm text-gray-800 leading-snug">
+                          <strong className="text-primary font-bold">Term Sheet Acknowledgment: </strong> 
+                          I confirm that I have reviewed the project disclosure parameters and preliminary term sheet guidelines. <span className="text-red-500">*</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* SECTION 5: Additional Inquiries & Context */}
+                  <div className="border border-gray-200 rounded-xl p-5 sm:p-7 bg-white">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-8 h-8 rounded-full bg-primary text-secondary flex items-center justify-center font-bold text-sm">
+                        <HelpCircle size={16} />
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-serif font-bold text-primary">
+                        5. Additional Details & Inquiries
+                      </h2>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-6 ml-11">
+                      Optional context to assist our investor relations desk with prioritization.
+                    </p>
+
+                    <div className="space-y-5">
+                      {/* How heard */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                          How did you hear about this project / pre-presale opportunity?
+                        </label>
+                        <div className="space-y-2.5">
+                          {hearAboutOptions.map((opt) => (
+                            <label
+                              key={opt}
+                              className={`flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
+                                hearAbout === opt 
+                                  ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm" 
+                                  : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="hearAbout"
+                                value={opt}
+                                checked={hearAbout === opt}
+                                onChange={(e) => setHearAbout(e.target.value)}
+                                className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
+                              />
+                              <span className="text-sm">{opt}</span>
+                            </label>
+                          ))}
+                        </div>
+                        {hearAbout === "Other" && (
+                          <input
+                            type="text"
+                            placeholder="Please specify source or referral channel"
+                            value={hearAboutOther}
+                            onChange={(e) => setHearAboutOther(e.target.value)}
+                            className="mt-3 w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
+                          />
+                        )}
+                      </div>
+
+                      {/* Referral Code / Source */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                          Referral Code / Partner Source Code
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. PARTNER-2026, GENADE-VIP"
+                          value={referralCode}
+                          onChange={(e) => setReferralCode(e.target.value)}
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm text-gray-900"
+                        />
+                      </div>
+
+                      {/* Questions or comments */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                          Questions, Special Allocation Requirements, or Comments
+                        </label>
+                        <textarea
+                          rows={4}
+                          placeholder="Provide any specific requirements, timing preferences, or inquiries regarding the pre-presale package..."
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm resize-y text-gray-900"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-primary text-secondary hover:bg-opacity-95 disabled:opacity-60 disabled:cursor-not-allowed font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                          <span>Submitting Expression of Interest...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send size={20} />
+                          <span>Submit Pre-Presale Interest Form</span>
+                        </>
+                      )}
+                    </button>
+                    <p className="text-center text-xs text-gray-500 mt-3">
+                      By submitting, your interest details will be delivered directly to the Genade Homes executive allocation desk.
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          ) : (
+            /* Post-Submission Success View */
+            <motion.div
+              key="confirmation"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden text-center p-8 sm:p-12"
+            >
+              <div className="w-20 h-20 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <CheckCircle2 size={48} />
+              </div>
+
+              <span className="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">
+                Expression of Interest Received
+              </span>
+
+              <h2 className="text-2xl sm:text-3xl font-serif font-black text-primary mb-4">
+                Thank You, {fullName}!
+              </h2>
+
+              <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-200 mb-8 max-w-xl mx-auto text-left space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                  <span className="text-xs font-semibold text-gray-500 uppercase">Selected Tier</span>
+                  <span className="text-sm font-bold text-primary bg-secondary/30 px-3 py-0.5 rounded-full">{investmentTier}</span>
+                </div>
+
+                <p className="text-gray-800 text-base sm:text-lg leading-relaxed font-medium">
+                  Your Pre-Presale Package interest and allocation parameters have been securely submitted to the Genade Homes Executive Allocation Desk.
+                </p>
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                  An executive investment advisor will review your profile and reach out directly with the confidential term sheet and next steps.
+                </p>
+              </div>
+
+              <div className="space-y-4 max-w-md mx-auto">
+                <a
+                  href={ADVISOR_WHATSAPP_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-[#25D366] text-white hover:bg-[#20ba5a] font-bold text-lg py-4 px-8 rounded-xl shadow-xl flex items-center justify-center gap-3 transition-all hover:scale-105"
+                >
+                  <MessageSquare size={24} fill="currentColor" />
+                  <span>Connect With Private Advisor on WhatsApp</span>
+                </a>
+
+                <button
+                  onClick={resetForm}
+                  className="text-xs text-gray-500 underline hover:text-primary transition-colors block mx-auto pt-2"
+                >
+                  Submit another interest form
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </section>
+    </div>
+  );
+}

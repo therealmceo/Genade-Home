@@ -13,6 +13,7 @@ import AddisCity from "@/src/pages/AddisCity";
 import TheVerdant from "@/src/pages/TheVerdant";
 import FairviewEstate from "@/src/pages/FairviewEstate";
 import SummitRegistration from "@/src/pages/SummitRegistration";
+import PrePresaleForm from "@/src/pages/PrePresaleForm";
 import PageTransition from "@/src/components/PageTransition";
 
 declare global {
@@ -54,6 +55,9 @@ export default function App() {
               <Route path="/webinar" element={<Webinar />} />
               <Route path="/summit-registration" element={<SummitRegistration />} />
               <Route path="/summit" element={<SummitRegistration />} />
+              <Route path="/pre-presale" element={<PrePresaleForm />} />
+              <Route path="/presale" element={<PrePresaleForm />} />
+              <Route path="/pre-presale-interest-form" element={<PrePresaleForm />} />
             </Routes>
           </PageTransition>
         </main>
