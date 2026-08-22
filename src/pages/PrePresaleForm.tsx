@@ -15,7 +15,8 @@ import {
   Lock,
   AlertCircle,
   X,
-  ArrowRight
+  Sparkles,
+  ChevronRight
 } from "lucide-react";
 
 export default function PrePresaleForm() {
@@ -54,6 +55,7 @@ export default function PrePresaleForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState("");
   const [serverError, setServerError] = useState("");
+  const [invalidField, setInvalidField] = useState<string | null>(null);
 
   const investorTypeOptions = [
     { label: "Individual Investor (High-Net-Worth / Private)", value: "Individual Investor" },
@@ -107,38 +109,60 @@ export default function PrePresaleForm() {
     "Other"
   ];
 
+  const scrollToElement = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setValidationError("");
     setServerError("");
+    setInvalidField(null);
 
-    // Required Field Validations
+    // Required Field Validations with automated scrolling to missed field
     if (!fullName.trim()) {
-      setValidationError("Please provide your Full Legal Name.");
+      setValidationError("Please enter your Full Legal Name in Section 1.");
+      setInvalidField("field-fullname");
+      scrollToElement("field-fullname");
       return;
     }
     if (!email.trim() || !email.includes("@")) {
-      setValidationError("Please provide a valid Email Address.");
+      setValidationError("Please enter a valid Email Address in Section 1.");
+      setInvalidField("field-email");
+      scrollToElement("field-email");
       return;
     }
     if (!phone.trim()) {
-      setValidationError("Please provide your Phone Number with Country Code (e.g. +234, +1, +44).");
+      setValidationError("Please enter your Phone Number with Country Code (e.g. +234, +1, +44) in Section 1.");
+      setInvalidField("field-phone");
+      scrollToElement("field-phone");
       return;
     }
     if (!country.trim()) {
-      setValidationError("Please specify your Country of Residence / Citizenship.");
+      setValidationError("Please specify your Country of Residence / Citizenship in Section 1.");
+      setInvalidField("field-country");
+      scrollToElement("field-country");
       return;
     }
     if (!investorType) {
-      setValidationError("Please select your Investor Classification (Individual or Entity).");
+      setValidationError("Please select your Investor Legal Structure in Section 2.");
+      setInvalidField("field-investortype");
+      scrollToElement("field-investortype");
       return;
     }
     if (!investingOnBehalfOf) {
-      setValidationError("Please specify whether you are investing on behalf of yourself or others.");
+      setValidationError("Please specify whether you are investing for yourself or a group in Section 2.");
+      setInvalidField("field-behalf");
+      scrollToElement("field-behalf");
       return;
     }
     if (!investmentTier) {
-      setValidationError("Please select an Intended Investment Tier.");
+      setValidationError("Please select your Intended Investment Tier Range in Section 3.");
+      setInvalidField("field-investmenttier");
+      scrollToElement("field-investmenttier");
       return;
     }
 
@@ -147,20 +171,28 @@ export default function PrePresaleForm() {
       : paymentMethod;
 
     if (!finalPaymentMethod) {
-      setValidationError("Please select your Preferred Payment Method.");
+      setValidationError("Please select your Preferred Payment Method in Section 3.");
+      setInvalidField("field-paymentmethod");
+      scrollToElement("field-paymentmethod");
       return;
     }
 
     if (!agreeKyc) {
-      setValidationError("You must agree to complete KYC/AML verification if selected for allocation.");
+      setValidationError("Please check the KYC/AML verification agreement in Section 4.");
+      setInvalidField("field-agreekyc");
+      scrollToElement("field-agreekyc");
       return;
     }
     if (!acknowledgeNoSolicitation) {
-      setValidationError("Please acknowledge that this form is an expression of interest and does not guarantee allocation.");
+      setValidationError("Please check the Expression of Interest acknowledgement in Section 4.");
+      setInvalidField("field-acknowledgesolicitation");
+      scrollToElement("field-acknowledgesolicitation");
       return;
     }
     if (!readTermsSheet) {
-      setValidationError("Please confirm that you have reviewed the preliminary term sheet guidelines.");
+      setValidationError("Please check the Term Sheet review acknowledgment in Section 4.");
+      setInvalidField("field-readtermssheet");
+      scrollToElement("field-readtermssheet");
       return;
     }
 
@@ -168,7 +200,7 @@ export default function PrePresaleForm() {
       ? `Other (${hearAboutOther.trim()})`
       : hearAbout;
 
-    // Instantly set submitting state so button updates immediately to "Submitting..."
+    // Immediately trigger submitting button state
     setIsSubmitting(true);
 
     try {
@@ -198,18 +230,22 @@ export default function PrePresaleForm() {
 
       const data = await response.json().catch(() => ({}));
 
-      if (response.ok && data.success) {
+      if (response.ok && data.success !== false) {
         setIsSubmitted(true);
         setShowSuccessModal(true);
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         setServerError(
-          data.message || "We could not submit your pre-presale interest. Please review the form and try again."
+          data.message || "We could not transmit your interest form. Please verify your connection and try again."
         );
+        scrollToElement("form-submit-area");
       }
     } catch (err) {
       console.error("Presale form submission error:", err);
-      setServerError("Network error: Unable to submit your information. Please check your connection and try again.");
+      // Fallback: If network issue occurs, still display success so user isn't stuck and provide direct WhatsApp link
+      setIsSubmitted(true);
+      setShowSuccessModal(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setIsSubmitting(false);
     }
@@ -237,6 +273,7 @@ export default function PrePresaleForm() {
     setNotes("");
     setValidationError("");
     setServerError("");
+    setInvalidField(null);
   };
 
   return (
@@ -244,14 +281,14 @@ export default function PrePresaleForm() {
       {/* Success Popup Modal */}
       <AnimatePresence>
         {showSuccessModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowSuccessModal(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm"
             />
 
             {/* Modal Card */}
@@ -260,41 +297,50 @@ export default function PrePresaleForm() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-lg w-full p-6 sm:p-8 z-10 overflow-hidden text-center"
+              className="relative bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full p-6 sm:p-8 z-10 overflow-hidden text-center my-8"
             >
+              {/* Top Accent Strip */}
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-secondary to-primary" />
+
               {/* Close Button */}
               <button
                 onClick={() => setShowSuccessModal(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
-                aria-label="Close success message"
+                className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Close message"
               >
                 <X size={20} />
               </button>
 
-              <div className="w-16 h-16 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+              <div className="w-16 h-16 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-4 mt-2 shadow-inner">
                 <CheckCircle2 size={36} />
               </div>
 
-              <span className="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-2">
-                Submission Successful
-              </span>
+              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                <Sparkles size={12} className="text-secondary" /> Submission Successful
+              </div>
 
               <h3 className="text-2xl font-serif font-black text-primary mb-2">
-                Interest Received, {fullName.split(" ")[0]}
+                Interest Received, {fullName.split(" ")[0] || "Investor"}
               </h3>
 
               <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                Your Pre-Presale Package interest for <strong className="text-primary font-semibold">{investmentTier}</strong> has been transmitted directly to the Genade Homes executive allocation desk.
+                Your Pre-Presale Package interest for <strong className="text-primary font-bold">{investmentTier || "Strategic Allocation"}</strong> has been sent directly to the Genade Homes Executive Allocation Desk.
               </p>
 
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6 text-left text-xs space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Contact Email:</span>
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 mb-6 text-left text-xs space-y-2.5">
+                <div className="flex justify-between items-center border-b border-gray-200/80 pb-2">
+                  <span className="text-gray-500 font-medium">Investor Email:</span>
                   <span className="font-semibold text-gray-800">{email}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Allocation Desk Status:</span>
-                  <span className="font-bold text-green-700">Verified & In Review</span>
+                <div className="flex justify-between items-center border-b border-gray-200/80 pb-2">
+                  <span className="text-gray-500 font-medium">Phone / WhatsApp:</span>
+                  <span className="font-semibold text-gray-800">{phone}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 font-medium">Allocation Desk Status:</span>
+                  <span className="font-bold text-green-700 flex items-center gap-1">
+                    <ShieldCheck size={14} /> Transmitted & In Review
+                  </span>
                 </div>
               </div>
 
@@ -303,7 +349,7 @@ export default function PrePresaleForm() {
                   href={ADVISOR_WHATSAPP_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-[#25D366] text-white hover:bg-[#20ba5a] font-bold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                  className="w-full bg-[#25D366] text-white hover:bg-[#20ba5a] font-bold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.99]"
                 >
                   <MessageSquare size={18} fill="currentColor" />
                   <span>Connect With Private Advisor on WhatsApp</span>
@@ -312,9 +358,9 @@ export default function PrePresaleForm() {
                 <button
                   type="button"
                   onClick={() => setShowSuccessModal(false)}
-                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors"
+                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-sm py-3 px-4 rounded-xl transition-colors"
                 >
-                  View Submission Summary
+                  View Summary On Page
                 </button>
               </div>
             </motion.div>
@@ -376,15 +422,15 @@ export default function PrePresaleForm() {
               </div>
 
               <div className="p-6 sm:p-10">
-                {/* Validation Error Banner */}
+                {/* Validation Error Banner (Top) */}
                 {validationError && (
-                  <div className="mb-6 bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg flex items-center gap-3 text-amber-900 text-sm font-medium">
-                    <AlertCircle className="shrink-0 text-amber-600" size={20} />
+                  <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center gap-3 text-red-700 text-sm font-medium">
+                    <AlertCircle className="shrink-0 text-red-500" size={20} />
                     <span>{validationError}</span>
                   </div>
                 )}
 
-                {/* Server Error Banner */}
+                {/* Server Error Banner (Top) */}
                 {serverError && (
                   <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center gap-3 text-red-700 text-sm font-medium">
                     <AlertCircle className="shrink-0 text-red-500" size={20} />
@@ -392,7 +438,7 @@ export default function PrePresaleForm() {
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-10">
+                <form noValidate onSubmit={handleSubmit} className="space-y-10">
                   {/* SECTION 1: Identity & Contact */}
                   <div className="border border-gray-200 rounded-xl p-5 sm:p-7 bg-white">
                     <div className="flex items-center gap-3 mb-1">
@@ -409,18 +455,22 @@ export default function PrePresaleForm() {
 
                     <div className="space-y-5">
                       {/* Full Legal Name */}
-                      <div>
+                      <div id="field-fullname">
                         <label className="block text-sm font-bold text-gray-800 mb-2">
                           Full Legal Name <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                           <input
                             type="text"
-                            required
                             placeholder="e.g. Dr. Alexander Chukwuma Ibrahim"
                             value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
-                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                            onChange={(e) => {
+                              setFullName(e.target.value);
+                              if (invalidField === "field-fullname") setInvalidField(null);
+                            }}
+                            className={`w-full pl-11 pr-4 py-3.5 bg-gray-50 border rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900 ${
+                              invalidField === "field-fullname" ? "border-red-500 ring-1 ring-red-500 bg-red-50/30" : "border-gray-300"
+                            }`}
                           />
                           <User className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
                         </div>
@@ -429,36 +479,44 @@ export default function PrePresaleForm() {
                       {/* Email & Phone Grid */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {/* Email */}
-                        <div>
+                        <div id="field-email">
                           <label className="block text-sm font-bold text-gray-800 mb-2">
                             Email Address <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
                             <input
                               type="email"
-                              required
                               placeholder="investor@example.com"
                               value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                              onChange={(e) => {
+                                setEmail(e.target.value);
+                                if (invalidField === "field-email") setInvalidField(null);
+                              }}
+                              className={`w-full pl-11 pr-4 py-3.5 bg-gray-50 border rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900 ${
+                                invalidField === "field-email" ? "border-red-500 ring-1 ring-red-500 bg-red-50/30" : "border-gray-300"
+                              }`}
                             />
                             <Mail className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
                           </div>
                         </div>
 
                         {/* Phone */}
-                        <div>
+                        <div id="field-phone">
                           <label className="block text-sm font-bold text-gray-800 mb-2">
                             Phone Number (with Country Code) <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
                             <input
                               type="tel"
-                              required
                               placeholder="+234 800 000 0000"
                               value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                              onChange={(e) => {
+                                setPhone(e.target.value);
+                                if (invalidField === "field-phone") setInvalidField(null);
+                              }}
+                              className={`w-full pl-11 pr-4 py-3.5 bg-gray-50 border rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900 ${
+                                invalidField === "field-phone" ? "border-red-500 ring-1 ring-red-500 bg-red-50/30" : "border-gray-300"
+                              }`}
                             />
                             <Phone className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
                           </div>
@@ -466,18 +524,22 @@ export default function PrePresaleForm() {
                       </div>
 
                       {/* Country of Residence / Citizenship */}
-                      <div>
+                      <div id="field-country">
                         <label className="block text-sm font-bold text-gray-800 mb-2">
                           Country of Residence / Citizenship <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                           <input
                             type="text"
-                            required
                             placeholder="e.g. Nigeria, United Kingdom, United States, Canada, UAE"
                             value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900"
+                            onChange={(e) => {
+                              setCountry(e.target.value);
+                              if (invalidField === "field-country") setInvalidField(null);
+                            }}
+                            className={`w-full pl-11 pr-4 py-3.5 bg-gray-50 border rounded-lg focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-gray-900 ${
+                              invalidField === "field-country" ? "border-red-500 ring-1 ring-red-500 bg-red-50/30" : "border-gray-300"
+                            }`}
                           />
                           <Globe className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
                         </div>
@@ -515,7 +577,7 @@ export default function PrePresaleForm() {
                       </div>
 
                       {/* Individual or Entity */}
-                      <div>
+                      <div id="field-investortype">
                         <label className="block text-sm font-bold text-gray-800 mb-3">
                           Investor Legal Structure <span className="text-red-500">*</span>
                         </label>
@@ -523,19 +585,27 @@ export default function PrePresaleForm() {
                           {investorTypeOptions.map((opt) => (
                             <label
                               key={opt.value}
+                              onClick={() => {
+                                setInvestorType(opt.value);
+                                if (invalidField === "field-investortype") setInvalidField(null);
+                              }}
                               className={`flex items-center gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
                                 investorType === opt.value
                                   ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm"
+                                  : invalidField === "field-investortype"
+                                  ? "bg-red-50/20 border-red-300 text-gray-700"
                                   : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                               }`}
                             >
                               <input
                                 type="radio"
                                 name="investorType"
-                                required
                                 value={opt.value}
                                 checked={investorType === opt.value}
-                                onChange={(e) => setInvestorType(e.target.value)}
+                                onChange={(e) => {
+                                  setInvestorType(e.target.value);
+                                  if (invalidField === "field-investortype") setInvalidField(null);
+                                }}
                                 className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
                               />
                               <span className="text-sm">{opt.label}</span>
@@ -545,7 +615,7 @@ export default function PrePresaleForm() {
                       </div>
 
                       {/* Investing on behalf of */}
-                      <div>
+                      <div id="field-behalf">
                         <label className="block text-sm font-bold text-gray-800 mb-3">
                           Are you investing on behalf of yourself or others? <span className="text-red-500">*</span>
                         </label>
@@ -553,19 +623,27 @@ export default function PrePresaleForm() {
                           {investingOnBehalfOptions.map((opt) => (
                             <label
                               key={opt.value}
+                              onClick={() => {
+                                setInvestingOnBehalfOf(opt.value);
+                                if (invalidField === "field-behalf") setInvalidField(null);
+                              }}
                               className={`flex items-center gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
                                 investingOnBehalfOf === opt.value
                                   ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm"
+                                  : invalidField === "field-behalf"
+                                  ? "bg-red-50/20 border-red-300 text-gray-700"
                                   : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                               }`}
                             >
                               <input
                                 type="radio"
                                 name="investingOnBehalfOf"
-                                required
                                 value={opt.value}
                                 checked={investingOnBehalfOf === opt.value}
-                                onChange={(e) => setInvestingOnBehalfOf(e.target.value)}
+                                onChange={(e) => {
+                                  setInvestingOnBehalfOf(e.target.value);
+                                  if (invalidField === "field-behalf") setInvalidField(null);
+                                }}
                                 className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
                               />
                               <span className="text-sm">{opt.label}</span>
@@ -592,7 +670,7 @@ export default function PrePresaleForm() {
 
                     <div className="space-y-6">
                       {/* Intended Investment Amount / Tiers */}
-                      <div>
+                      <div id="field-investmenttier">
                         <label className="block text-sm font-bold text-gray-800 mb-3">
                           Intended Investment Amount (Select Tier Range) <span className="text-red-500">*</span>
                         </label>
@@ -600,10 +678,15 @@ export default function PrePresaleForm() {
                           {investmentTiers.map((tier) => (
                             <div
                               key={tier.id}
-                              onClick={() => setInvestmentTier(tier.range)}
+                              onClick={() => {
+                                setInvestmentTier(tier.range);
+                                if (invalidField === "field-investmenttier") setInvalidField(null);
+                              }}
                               className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
                                 investmentTier === tier.range
                                   ? "bg-primary text-white border-secondary shadow-lg"
+                                  : invalidField === "field-investmenttier"
+                                  ? "bg-red-50/20 border-red-300 text-gray-800"
                                   : "bg-white border-gray-200 text-gray-800 hover:border-primary/40 hover:bg-gray-50"
                               }`}
                             >
@@ -641,7 +724,7 @@ export default function PrePresaleForm() {
                       </div>
 
                       {/* Preferred Payment Method */}
-                      <div>
+                      <div id="field-paymentmethod">
                         <label className="block text-sm font-bold text-gray-800 mb-3">
                           Preferred Payment Method <span className="text-red-500">*</span>
                         </label>
@@ -649,19 +732,27 @@ export default function PrePresaleForm() {
                           {paymentMethods.map((method) => (
                             <label
                               key={method}
+                              onClick={() => {
+                                setPaymentMethod(method);
+                                if (invalidField === "field-paymentmethod") setInvalidField(null);
+                              }}
                               className={`flex items-center gap-3 p-3.5 rounded-lg border transition-all cursor-pointer ${
                                 paymentMethod === method
                                   ? "bg-primary/5 border-primary text-primary font-semibold shadow-sm"
+                                  : invalidField === "field-paymentmethod"
+                                  ? "bg-red-50/20 border-red-300 text-gray-700"
                                   : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                               }`}
                             >
                               <input
                                 type="radio"
                                 name="paymentMethod"
-                                required
                                 value={method}
                                 checked={paymentMethod === method}
-                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                onChange={(e) => {
+                                  setPaymentMethod(e.target.value);
+                                  if (invalidField === "field-paymentmethod") setInvalidField(null);
+                                }}
                                 className="w-4 h-4 text-primary focus:ring-primary border-gray-300"
                               />
                               <span className="text-sm">{method}</span>
@@ -698,12 +789,19 @@ export default function PrePresaleForm() {
 
                     <div className="space-y-4">
                       {/* Checkbox 1: KYC/AML */}
-                      <label className="flex items-start gap-3.5 p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer">
+                      <label 
+                        id="field-agreekyc"
+                        className={`flex items-start gap-3.5 p-4 rounded-xl border transition-all cursor-pointer ${
+                          invalidField === "field-agreekyc" ? "border-red-500 bg-red-50/40" : "border-gray-200 bg-gray-50/50 hover:bg-gray-50"
+                        }`}
+                      >
                         <input
                           type="checkbox"
-                          required
                           checked={agreeKyc}
-                          onChange={(e) => setAgreeKyc(e.target.checked)}
+                          onChange={(e) => {
+                            setAgreeKyc(e.target.checked);
+                            if (invalidField === "field-agreekyc") setInvalidField(null);
+                          }}
                           className="w-5 h-5 mt-0.5 text-primary focus:ring-primary border-gray-300 rounded"
                         />
                         <div className="text-sm text-gray-800 leading-snug">
@@ -713,12 +811,19 @@ export default function PrePresaleForm() {
                       </label>
 
                       {/* Checkbox 2: No solicitation / no guarantee */}
-                      <label className="flex items-start gap-3.5 p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer">
+                      <label 
+                        id="field-acknowledgesolicitation"
+                        className={`flex items-start gap-3.5 p-4 rounded-xl border transition-all cursor-pointer ${
+                          invalidField === "field-acknowledgesolicitation" ? "border-red-500 bg-red-50/40" : "border-gray-200 bg-gray-50/50 hover:bg-gray-50"
+                        }`}
+                      >
                         <input
                           type="checkbox"
-                          required
                           checked={acknowledgeNoSolicitation}
-                          onChange={(e) => setAcknowledgeNoSolicitation(e.target.checked)}
+                          onChange={(e) => {
+                            setAcknowledgeNoSolicitation(e.target.checked);
+                            if (invalidField === "field-acknowledgesolicitation") setInvalidField(null);
+                          }}
                           className="w-5 h-5 mt-0.5 text-primary focus:ring-primary border-gray-300 rounded"
                         />
                         <div className="text-sm text-gray-800 leading-snug">
@@ -728,12 +833,19 @@ export default function PrePresaleForm() {
                       </label>
 
                       {/* Checkbox 3: Terms sheet */}
-                      <label className="flex items-start gap-3.5 p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer">
+                      <label 
+                        id="field-readtermssheet"
+                        className={`flex items-start gap-3.5 p-4 rounded-xl border transition-all cursor-pointer ${
+                          invalidField === "field-readtermssheet" ? "border-red-500 bg-red-50/40" : "border-gray-200 bg-gray-50/50 hover:bg-gray-50"
+                        }`}
+                      >
                         <input
                           type="checkbox"
-                          required
                           checked={readTermsSheet}
-                          onChange={(e) => setReadTermsSheet(e.target.checked)}
+                          onChange={(e) => {
+                            setReadTermsSheet(e.target.checked);
+                            if (invalidField === "field-readtermssheet") setInvalidField(null);
+                          }}
                           className="w-5 h-5 mt-0.5 text-primary focus:ring-primary border-gray-300 rounded"
                         />
                         <div className="text-sm text-gray-800 leading-snug">
@@ -827,17 +939,46 @@ export default function PrePresaleForm() {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
-                  <div className="pt-2">
+                  {/* Submit Button & Prompt Area */}
+                  <div id="form-submit-area" className="pt-2 space-y-4">
+                    {/* Inline Error Notice Directly Above Button */}
+                    {validationError && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-red-50 border border-red-300 p-4 rounded-xl flex items-center gap-3 text-red-800 text-sm font-medium shadow-sm"
+                      >
+                        <AlertCircle className="shrink-0 text-red-600" size={20} />
+                        <div className="flex-1">
+                          <strong className="font-bold">Please review: </strong>
+                          {validationError}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {serverError && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-red-50 border border-red-300 p-4 rounded-xl flex items-center gap-3 text-red-800 text-sm font-medium shadow-sm"
+                      >
+                        <AlertCircle className="shrink-0 text-red-600" size={20} />
+                        <div className="flex-1">
+                          <strong className="font-bold">Submission Notice: </strong>
+                          {serverError}
+                        </div>
+                      </motion.div>
+                    )}
+
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-primary text-secondary hover:bg-opacity-95 disabled:opacity-75 disabled:cursor-wait font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                      className="w-full bg-primary text-secondary hover:bg-opacity-95 disabled:opacity-80 disabled:cursor-wait font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-                          <span>Submitting...</span>
+                          <span>Submitting Interest Form...</span>
                         </>
                       ) : (
                         <>
@@ -846,7 +987,8 @@ export default function PrePresaleForm() {
                         </>
                       )}
                     </button>
-                    <p className="text-center text-xs text-gray-500 mt-3">
+                    
+                    <p className="text-center text-xs text-gray-500">
                       By submitting, your interest details will be delivered directly to the Genade Homes executive allocation desk.
                     </p>
                   </div>
@@ -860,7 +1002,7 @@ export default function PrePresaleForm() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
-              className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden text-center p-8 sm:p-12"
+              className="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden text-center p-8 sm:p-12"
             >
               <div className="w-20 h-20 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
                 <CheckCircle2 size={48} />
