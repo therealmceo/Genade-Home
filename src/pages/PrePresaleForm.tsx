@@ -1,7 +1,6 @@
 import { useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
-  Building2, 
   User, 
   Mail, 
   Phone, 
@@ -11,12 +10,12 @@ import {
   MessageSquare, 
   ShieldCheck, 
   DollarSign, 
-  FileText, 
   Briefcase, 
   HelpCircle,
   Lock,
-  ChevronRight,
-  AlertCircle
+  AlertCircle,
+  X,
+  ArrowRight
 } from "lucide-react";
 
 export default function PrePresaleForm() {
@@ -51,6 +50,7 @@ export default function PrePresaleForm() {
 
   // UI States
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState("");
   const [serverError, setServerError] = useState("");
@@ -168,6 +168,7 @@ export default function PrePresaleForm() {
       ? `Other (${hearAboutOther.trim()})`
       : hearAbout;
 
+    // Instantly set submitting state so button updates immediately to "Submitting..."
     setIsSubmitting(true);
 
     try {
@@ -199,6 +200,7 @@ export default function PrePresaleForm() {
 
       if (response.ok && data.success) {
         setIsSubmitted(true);
+        setShowSuccessModal(true);
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         setServerError(
@@ -215,6 +217,7 @@ export default function PrePresaleForm() {
 
   const resetForm = () => {
     setIsSubmitted(false);
+    setShowSuccessModal(false);
     setFullName("");
     setEmail("");
     setPhone("");
@@ -238,6 +241,87 @@ export default function PrePresaleForm() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Success Popup Modal */}
+      <AnimatePresence>
+        {showSuccessModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowSuccessModal(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Modal Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-lg w-full p-6 sm:p-8 z-10 overflow-hidden text-center"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Close success message"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="w-16 h-16 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <CheckCircle2 size={36} />
+              </div>
+
+              <span className="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-2">
+                Submission Successful
+              </span>
+
+              <h3 className="text-2xl font-serif font-black text-primary mb-2">
+                Interest Received, {fullName.split(" ")[0]}
+              </h3>
+
+              <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                Your Pre-Presale Package interest for <strong className="text-primary font-semibold">{investmentTier}</strong> has been transmitted directly to the Genade Homes executive allocation desk.
+              </p>
+
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6 text-left text-xs space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Contact Email:</span>
+                  <span className="font-semibold text-gray-800">{email}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Allocation Desk Status:</span>
+                  <span className="font-bold text-green-700">Verified & In Review</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <a
+                  href={ADVISOR_WHATSAPP_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-[#25D366] text-white hover:bg-[#20ba5a] font-bold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                >
+                  <MessageSquare size={18} fill="currentColor" />
+                  <span>Connect With Private Advisor on WhatsApp</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setShowSuccessModal(false)}
+                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors"
+                >
+                  View Submission Summary
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Header Section */}
       <section className="relative pt-36 pb-20 sm:pt-40 sm:pb-24 bg-primary text-white overflow-hidden border-b-4 border-secondary">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -748,12 +832,12 @@ export default function PrePresaleForm() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-primary text-secondary hover:bg-opacity-95 disabled:opacity-60 disabled:cursor-not-allowed font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                      className="w-full bg-primary text-secondary hover:bg-opacity-95 disabled:opacity-75 disabled:cursor-wait font-serif font-bold text-lg py-4 px-8 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.99]"
                     >
                       {isSubmitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-                          <span>Submitting Expression of Interest...</span>
+                          <span>Submitting...</span>
                         </>
                       ) : (
                         <>
@@ -770,7 +854,7 @@ export default function PrePresaleForm() {
               </div>
             </motion.div>
           ) : (
-            /* Post-Submission Success View */
+            /* Post-Submission In-Page Confirmation View */
             <motion.div
               key="confirmation"
               initial={{ opacity: 0, scale: 0.95 }}
