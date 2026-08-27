@@ -36,6 +36,59 @@ function sanitize(str: unknown): string {
     .replace(/'/g, "&#039;");
 }
 
+/**
+ * Forwards Summit Registration data to the Google Apps Script Web App connected to Google Sheets.
+ * Strictly called ONLY for Summit Registration submissions (never for Pre-Sale forms).
+ */
+async function sendToGoogleSheets(payload: {
+  fullName: string;
+  email: string;
+  phone: string;
+  cityState: string;
+  hearAbout: string;
+}): Promise<boolean> {
+  const googleScriptUrl = getEnv("GOOGLE_SHEETS_SCRIPT_URL");
+
+  if (!googleScriptUrl) {
+    console.warn("[WARN] GOOGLE_SHEETS_SCRIPT_URL environment variable is not configured. Skipping Google Sheets sync for Summit Registration.");
+    return false;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10-second timeout
+
+    const res = await fetch(googleScriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: payload.fullName,
+        email: payload.email,
+        phone: payload.phone,
+        cityState: payload.cityState,
+        hearAbout: payload.hearAbout,
+      }),
+      signal: controller.signal,
+      redirect: "follow",
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      console.error(`[GOOGLE SHEETS APPS SCRIPT ERROR] HTTP ${res.status}: ${res.statusText}`);
+      return false;
+    }
+
+    console.log(`[GOOGLE SHEETS APPS SCRIPT SUCCESS] Synced summit registration for ${payload.fullName}`);
+    return true;
+  } catch (err: any) {
+    console.error("[GOOGLE SHEETS APPS SCRIPT EXCEPTION]", err?.message || err);
+    return false;
+  }
+}
+
 export default async function handler(req: any, res: any) {
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -188,6 +241,17 @@ export default async function handler(req: any, res: any) {
           </div>
         </div>
       `;
+    }
+
+    // Connect ONLY Summit Registration submissions to Google Sheets via Google Apps Script
+    if (!isPresaleForm) {
+      await sendToGoogleSheets({
+        fullName: body.fullName ? String(body.fullName).trim() : fullName,
+        email: body.email ? String(body.email).trim() : email,
+        phone: body.phone ? String(body.phone).trim() : phone,
+        cityState: body.cityState ? String(body.cityState).trim() : "",
+        hearAbout: body.hearAbout ? String(body.hearAbout).trim() : "",
+      });
     }
 
     if (!apiKey) {
