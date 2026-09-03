@@ -46,6 +46,7 @@ async function sendToGoogleSheets(payload: {
   phone: string;
   cityState: string;
   hearAbout: string;
+  referredBy: string;
 }): Promise<boolean> {
   const googleScriptUrl = getEnv("GOOGLE_SHEETS_SCRIPT_URL");
 
@@ -69,6 +70,7 @@ async function sendToGoogleSheets(payload: {
         phone: payload.phone,
         cityState: payload.cityState,
         hearAbout: payload.hearAbout,
+        referredBy: payload.referredBy,
       }),
       signal: controller.signal,
       redirect: "follow",
@@ -214,6 +216,7 @@ export default async function handler(req: any, res: any) {
       // Handle Standard Summit Registration
       const cityState = sanitize(body.cityState?.trim());
       const hearAbout = sanitize(body.hearAbout?.trim());
+      const referredBy = sanitize(body.referredBy?.trim());
 
       subject = `New Summit Registration: ${fullName}`;
       senderEmail = getEnv("SENDER_EMAIL", "Abuja Realtors Summit <onboarding@resend.dev>");
@@ -233,6 +236,7 @@ export default async function handler(req: any, res: any) {
               <p style="margin: 6px 0; font-size: 15px;"><strong>Phone / WhatsApp:</strong> ${phone}</p>
               <p style="margin: 6px 0; font-size: 15px;"><strong>City / State:</strong> ${cityState || "N/A"}</p>
               <p style="margin: 6px 0; font-size: 15px;"><strong>How Heard About Summit:</strong> ${hearAbout || "N/A"}</p>
+              <p style="margin: 6px 0; font-size: 15px;"><strong>Referred By:</strong> ${referredBy || "N/A"}</p>
             </div>
           </div>
 
@@ -251,6 +255,7 @@ export default async function handler(req: any, res: any) {
         phone: body.phone ? String(body.phone).trim() : phone,
         cityState: body.cityState ? String(body.cityState).trim() : "",
         hearAbout: body.hearAbout ? String(body.hearAbout).trim() : "",
+        referredBy: body.referredBy ? String(body.referredBy).trim() : "",
       });
     }
 

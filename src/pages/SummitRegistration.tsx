@@ -24,6 +24,7 @@ export default function SummitRegistration() {
   const [cityState, setCityState] = useState("");
   const [hearAbout, setHearAbout] = useState("");
   const [hearAboutOther, setHearAboutOther] = useState("");
+  const [referredBy, setReferredBy] = useState("");
 
   // UI States
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -76,6 +77,7 @@ export default function SummitRegistration() {
           phone: phone.trim(),
           cityState: cityState.trim(),
           hearAbout: finalHearAbout,
+          referredBy: referredBy.trim(),
         }),
       });
 
@@ -281,6 +283,24 @@ export default function SummitRegistration() {
                             className="mt-3 w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
                           />
                         )}
+                      </div>
+
+                      {/* Q6: Referred by */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                          6. Referred by
+                        </label>
+                        <div className="relative">
+                          <User className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
+                          <input
+                            type="text"
+                            name="referredBy"
+                            placeholder="e.g. Name of the person or organization who referred you"
+                            value={referredBy}
+                            onChange={(e) => setReferredBy(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm transition-all"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
